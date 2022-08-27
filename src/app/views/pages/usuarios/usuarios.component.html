@@ -1,0 +1,87 @@
+<div class="row inbox-wrapper">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-12">
+            <button type="button" class="btn btn-primary float-right" (click)="onAgregar()">Agregar</button>
+          </div>
+        </div>
+        <div class="row">
+          <h6 class="card-title">Usuarios</h6>
+          <div class="table-responsive">
+            <ngx-datatable
+            class="bootstrap"
+            [rows]="rows"
+            [loadingIndicator]="loadingIndicator"
+            [columnMode]="ColumnMode.force"
+            [footerHeight]="50"
+            [limit]="10"
+            rowHeight="auto"
+          >
+            <ngx-datatable-column name="Id"  prop="idUsuario"></ngx-datatable-column>
+            <ngx-datatable-column name="Nombre"  prop="nombre"></ngx-datatable-column>
+            <ngx-datatable-column name="Telfono" prop="telefono"></ngx-datatable-column>
+            <ngx-datatable-column name="Mail" prop="mail"></ngx-datatable-column>
+            <ngx-datatable-column name="Usuario" prop="usuario"></ngx-datatable-column>
+            <ngx-datatable-column name="Rol" prop="Roles.descripcion"></ngx-datatable-column>
+            <ngx-datatable-column name="Acciones"></ngx-datatable-column>
+          </ngx-datatable>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- MODAL AGREGAR -->
+<ng-template #lgModal let-modal>
+  <div class="modal-header">
+    <h5 class="modal-title" id="exampleModalLabel">{{title}}</h5>
+    <button type="button" class="close" (click)="modal.close('by: close icon')" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form (ngSubmit)="form1Submit()" [formGroup]="validationForm1">
+
+      <div class="form-group">
+        <label for="firstName" class="col-sm-3 ">First name</label>
+        <div class="col-sm-12">
+          <input type="text" class="form-control" id="firstName" formControlName="firstName"
+          [ngClass]="{'is-invalid': isForm1Submitted && form1.firstName.errors}" placeholder="First name">
+          <div *ngIf="isForm1Submitted && form1.firstName.errors?.required" class="invalid-feedback">
+            Required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="lastName" class="col-sm-3 ">Last name</label>
+        <div class="col-sm-12">
+          <input type="text" class="form-control" id="lastName" formControlName="lastName"
+            [ngClass]="{'is-invalid': isForm1Submitted && form1.lastName.errors}" placeholder="Last name">
+          <div *ngIf="isForm1Submitted && form1.lastName.errors?.required" class="invalid-feedback">
+            Required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="userName" class="col-sm-3 ">User name</label>
+        <div class="col-sm-12">
+          <input type="text" class="form-control" id="userName" formControlName="userName"
+          [ngClass]="{'is-invalid': isForm1Submitted && form1.userName.errors}" placeholder="User name">
+          <div *ngIf="isForm1Submitted && form1.userName.errors?.required" class="invalid-feedback">
+            Required
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
+    <button type="button" class="btn btn-primary" (click)="modal.close('by: save button')">Guardar</button>
+  </div>
+</ng-template>
