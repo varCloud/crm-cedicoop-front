@@ -56,6 +56,10 @@ const routes: Routes = [
         path: 'usuarios',
         loadChildren: () => import('./views/pages/usuarios/usuarios.module').then(m => m.UsuariosModule)
       },
+      {
+        path: 'cursos',
+        loadChildren: () => import('./views/pages/cursos/cursos.module').then(m => m.CursosModule)
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       // { path: '**', redirectTo: 'dashboard', pathMatch: 'full' }
     ]

@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { UsuariosRoutingModule } from './usuarios-routing.module';
 import { UsuariosComponent } from './usuarios.component';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
+import { QuillModule } from 'ngx-quill';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
     NgbModalModule,
     FormsModule,
     ReactiveFormsModule,
+    QuillModule.forRoot()
 
   ]
 })

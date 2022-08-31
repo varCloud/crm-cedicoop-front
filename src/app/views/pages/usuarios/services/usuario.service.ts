@@ -12,6 +12,6 @@ export class UsuarioService {
   }
 
   obtenerUsuarios(){
-     return this.httpClient.get(`${CONSTANTS.API_BASE_URL}${CONSTANTS.USUARIOS_URL}`).pipe(retry(1))
+     return this.httpClient.get(`${CONSTANTS.API_BASE_URL}${CONSTANTS.API_USUARIOS_URL}`).pipe(retry(1))
   }
 }
