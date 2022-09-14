@@ -29,16 +29,33 @@
                     <h6 class="card-title">Clientes</h6>
                     <div class="table-responsive">
                         <ngx-datatable class="bootstrap" [rows]="clientes" [loadingIndicator]="loadingIndicator" [columnMode]="ColumnMode.force" [footerHeight]="50" [limit]="10" rowHeight="auto">
-                            <ngx-datatable-column name="Id" prop="idCliente"></ngx-datatable-column>
+                            <ngx-datatable-column [width]="25" name="Id" prop="idCliente"></ngx-datatable-column>
                             <ngx-datatable-column name="Nombre" prop="nombre"></ngx-datatable-column>
                             <ngx-datatable-column name="Razon Social" prop="razonSocial"></ngx-datatable-column>
                             <ngx-datatable-column name="Contacto" prop="contacto"></ngx-datatable-column>
                             <ngx-datatable-column name="Telefono" prop="telefono"></ngx-datatable-column>
                             <ngx-datatable-column name="Mail" prop="mail"></ngx-datatable-column>
-                            <ngx-datatable-column name="Fecha de alta" prop="fechaAlta"></ngx-datatable-column>
-                            <ngx-datatable-column name="Fecha Actualizacion" prop="fechaActualizacion"></ngx-datatable-column>
+                            <ngx-datatable-column name="Fecha de alta" prop="fechaAlta">
+                                <ng-template let-value="value" ngx-datatable-cell-template>
+                                    {{value | date: 'MM/dd/yyyy'}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column name="Fecha Actualizacion" prop="fechaActualizacion">
+                                <ng-template let-value="value" ngx-datatable-cell-template>
+                                    {{value | date: 'MM/dd/yyyy'}}
+                                </ng-template>
+                            </ngx-datatable-column>
                             <ngx-datatable-column name="Tipo de Cliente" prop="tipoCliente.descripcion"></ngx-datatable-column>
-                            <ngx-datatable-column name="Acciones"></ngx-datatable-column>
+                            <ngx-datatable-column [width]="200" name="Acciones">
+                                <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                    <span>
+                                      <div class="btn-group" role="group" aria-label="Basic example">
+                                        <button type="button" (click)="actualizarCliente(row)" class="btn btn-warning">Editar</button>
+                                        <button type="button" class="btn btn-danger">Eliminar</button>
+                                      </div>
+                                    </span>
+                                </ng-template>
+                            </ngx-datatable-column>
                         </ngx-datatable>
                     </div>
                 </div>
@@ -95,7 +112,7 @@
                         </div>
                     </div>
                     <label>Correo Electronico</label>
-                    <input type="text" formControlName="mail" id="mail" name="mail" class="form-control" required />
+                    <input type="text" formControlName="mail" id="mail" name="mail" class="form-control" required placeholder="ejemplo@ejemplo.com" />
                     <p class="text-danger mt-1" *ngIf="nuevoCliente.get('mail')?.errors">Requerido</p>
                     <label>Tipo de Cliente</label>
                     <ng-select [items]="tipoClientes" bindLabel="descripcion" bindValue="idTipoCliente" placeholder="type to search" formControlName="idTipoCliente">
@@ -104,7 +121,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
-                    <button type="submit" class="btn btn-primary">Guardar</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="nuevoCliente.invalid">Guardar</button>
                 </div>
             </form>
         </div>

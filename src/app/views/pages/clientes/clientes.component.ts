@@ -16,6 +16,7 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 export class ClientesComponent implements OnInit {
   
   nuevoCliente: FormGroup;
+  idActualizar: Number;
  
   /************PROPIEDADES PARA EL MODAL**********/
   @ViewChild('lgModal') lgModal: any;
@@ -49,13 +50,11 @@ export class ClientesComponent implements OnInit {
       contacto: ["", Validators.required],
       esPersonaMoral:["", Validators.required],
       telefono: ["", Validators.required],
-      mail: ["", Validators.required],
-      idTipoCliente: ["", Validators.required]
-      /* Logica
-      activo:["", Validators.required],
-      fechaAlta: ["", Validators.required],
-      fechaActualizacion: ["", Validators.required],
-      */
+      mail: ["", Validators.required && Validators.email],
+      idTipoCliente: ["", Validators.required],
+      fechaAlta: [""],
+      fechaActualizacion: [""],
+
     });
   }
 
@@ -67,9 +66,12 @@ export class ClientesComponent implements OnInit {
 
   public getTipoClientes(){
     this._clientesService.getTipoClientes().subscribe((tipoClientes: Array<TipoClienteModel>) => {
-      console.log(tipoClientes);
       this.tipoClientes = tipoClientes;
     })
+  }
+
+  public actualizarCliente(id){
+    console.log(id);
   }
 
   private _cerrar(): void {
@@ -77,8 +79,13 @@ export class ClientesComponent implements OnInit {
   }
 
   public onSubmit(): void {
-    console.log(this.nuevoCliente.value)
-    
+    let date = new Date();
+    let fechaActual = new Date(date);
+    this.nuevoCliente.patchValue({ 
+      fechaAlta : fechaActual.toISOString(),
+      fechaActualizacion : fechaActual.toISOString()
+    });
+    this._clientesService.postClientes(this.nuevoCliente.value).subscribe();
   }
 
   public onAgregar(): void {

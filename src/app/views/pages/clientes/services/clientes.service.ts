@@ -28,6 +28,10 @@ export class ClientesService {
     )
   }
 
+  public postClientes(cliente: any){
+    return this._httpClient.post(`${CONSTANTS.API_BASE_URL}${CONSTANTS.API_CLIENTES_URL}`,cliente)
+  }
+
   public getTipoClientes(){
     return this._httpClient.get(`${CONSTANTS.API_BASE_URL}${CONSTANTS.API_TIPOCLIENTES_URL}`)
     .pipe(
