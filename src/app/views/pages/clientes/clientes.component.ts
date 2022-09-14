@@ -1,6 +1,7 @@
 import { ModalComponent } from './../ui-components/modal/modal.component';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ClienteModel } from './../../../Models/cliente.model';
+import { TipoClienteModel } from './../../../Models/tipoCliente.model';
 import { ClientesService } from './services/clientes.service';
 import { ColumnMode } from '@swimlane/ngx-datatable';
 import { Component, OnInit, ViewChild } from '@angular/core';
@@ -24,7 +25,8 @@ export class ClientesComponent implements OnInit {
   loadingIndicator = true;
   reorderable = true;
   ColumnMode = ColumnMode;
-  rows = [];
+  clientes = [];
+  tipoClientes = [];
   constructor(
     private _clientesService: ClientesService,
     private modalService: NgbModal,
@@ -35,6 +37,7 @@ export class ClientesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getClientes();
+    this.getTipoClientes();
     this.nuevoCliente = this.initForm();
   }
 
@@ -47,18 +50,25 @@ export class ClientesComponent implements OnInit {
       esPersonaMoral:["", Validators.required],
       telefono: ["", Validators.required],
       mail: ["", Validators.required],
+      idTipoCliente: ["", Validators.required]
       /* Logica
       activo:["", Validators.required],
       fechaAlta: ["", Validators.required],
       fechaActualizacion: ["", Validators.required],
-      idTipoCliente: ["", Validators.required]
       */
     });
   }
 
   public getClientes() {
     this._clientesService.getClientes().subscribe((clientes: Array<ClienteModel>) => {
-      this.rows = clientes;
+      this.clientes = clientes;
+    })
+  }
+
+  public getTipoClientes(){
+    this._clientesService.getTipoClientes().subscribe((tipoClientes: Array<TipoClienteModel>) => {
+      console.log(tipoClientes);
+      this.tipoClientes = tipoClientes;
     })
   }
 

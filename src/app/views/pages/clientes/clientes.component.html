@@ -16,7 +16,6 @@
     </div>
 </div>
 
-
 <div class="row inbox-wrapper">
     <div class="col-lg-12">
         <div class="card">
@@ -29,7 +28,7 @@
                 <div class="row">
                     <h6 class="card-title">Clientes</h6>
                     <div class="table-responsive">
-                        <ngx-datatable class="bootstrap" [rows]="rows" [loadingIndicator]="loadingIndicator" [columnMode]="ColumnMode.force" [footerHeight]="50" [limit]="10" rowHeight="auto">
+                        <ngx-datatable class="bootstrap" [rows]="clientes" [loadingIndicator]="loadingIndicator" [columnMode]="ColumnMode.force" [footerHeight]="50" [limit]="10" rowHeight="auto">
                             <ngx-datatable-column name="Id" prop="idCliente"></ngx-datatable-column>
                             <ngx-datatable-column name="Nombre" prop="nombre"></ngx-datatable-column>
                             <ngx-datatable-column name="Razon Social" prop="razonSocial"></ngx-datatable-column>
@@ -37,10 +36,8 @@
                             <ngx-datatable-column name="Telefono" prop="telefono"></ngx-datatable-column>
                             <ngx-datatable-column name="Mail" prop="mail"></ngx-datatable-column>
                             <ngx-datatable-column name="Fecha de alta" prop="fechaAlta"></ngx-datatable-column>
-                            <ngx-datatable-column name="Fecha Actualizacion" prop="fechaActualizacion">
-                            </ngx-datatable-column>
-                            <ngx-datatable-column name="Tipo de Cliente" prop="tipoCliente.descripcion">
-                            </ngx-datatable-column>
+                            <ngx-datatable-column name="Fecha Actualizacion" prop="fechaActualizacion"></ngx-datatable-column>
+                            <ngx-datatable-column name="Tipo de Cliente" prop="tipoCliente.descripcion"></ngx-datatable-column>
                             <ngx-datatable-column name="Acciones"></ngx-datatable-column>
                         </ngx-datatable>
                     </div>
@@ -49,7 +46,6 @@
         </div>
     </div>
 </div>
-
 
 <!-- MODAL AGREGAR -->
 <ng-template #lgModal let-modal>
@@ -101,6 +97,10 @@
                     <label>Correo Electronico</label>
                     <input type="text" formControlName="mail" id="mail" name="mail" class="form-control" required />
                     <p class="text-danger mt-1" *ngIf="nuevoCliente.get('mail')?.errors">Requerido</p>
+                    <label>Tipo de Cliente</label>
+                    <ng-select [items]="tipoClientes" bindLabel="descripcion" bindValue="idTipoCliente" placeholder="type to search" formControlName="idTipoCliente">
+                    </ng-select>
+                    <p class="text-danger mt-1" *ngIf="nuevoCliente.get('idTipoCliente')?.errors">Requerido</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
