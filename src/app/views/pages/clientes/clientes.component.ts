@@ -1,3 +1,6 @@
+import { element } from 'protractor';
+import { DataTable } from 'simple-datatables';
+import { Subscription } from 'rxjs';
 import { ModalComponent } from './../ui-components/modal/modal.component';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ClienteModel } from './../../../Models/cliente.model';
@@ -8,6 +11,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 
 
+
 @Component({
   selector: 'app-clientes',
   templateUrl: './clientes.component.html',
@@ -16,14 +20,15 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 export class ClientesComponent implements OnInit {
   
   nuevoCliente: FormGroup;
+  actualizarCliente: FormGroup;
   idActualizar: Number;
-
-  personaMoral: string[] = ['Si','No']
- 
+  subscription: Subscription;
+  
   /************PROPIEDADES PARA EL MODAL**********/
   @ViewChild('lgModal') lgModal: any;
   @ViewChild('actualizarModal') actualizarModal: any;
   currentModal: NgbModalRef;
+  
   title = 'Agregar'
   /********PROPPIEDAD PARA LA TABLA******** */
   loadingIndicator = true;
@@ -43,6 +48,10 @@ export class ClientesComponent implements OnInit {
     this.getClientes();
     this.getTipoClientes();
     this.nuevoCliente = this.initForm();
+    this.actualizarCliente = this.initForm();
+    this.subscription = this._clientesService.refresh.subscribe(()=>{ //refresh table
+      this.clientes = [...this.clientes];
+    })
   }
 
 
@@ -57,7 +66,8 @@ export class ClientesComponent implements OnInit {
       idTipoCliente: ["", Validators.required],
       fechaAlta: [""],
       fechaActualizacion: [""],
-
+      activo : [""],
+      idCliente : [""]
     });
   }
 
@@ -73,39 +83,56 @@ export class ClientesComponent implements OnInit {
     })
   }
 
-  public actualizarCliente(id){
-    console.log(id);
-  }
-
   private _cerrar(): void {
     this.currentModal.close();
   }
 
-  public onSubmit(): void {
-    let date = new Date();
-    let fechaActual = new Date(date);
-    this.nuevoCliente.patchValue({ 
-      fechaAlta : fechaActual.toISOString(),
-      fechaActualizacion : fechaActual.toISOString()
-    });
-    this._clientesService.postClientes(this.nuevoCliente.value).subscribe();
-  }
-
-  public onActualizar(cliente): void {
-    this.nuevoCliente.patchValue(cliente);
-    this.currentModal = this.modalService.open(this.actualizarModal, {
-      backdrop: 'static',
-      keyboard: false,
-      centered: true
-    });
-    //this.actualizarCliente(cliente);
-  }
-
-  public onAgregar(): void {
+  public AgregarCliente_Modal(): void {
+    this.nuevoCliente.reset();
     this.currentModal = this.modalService.open(this.lgModal, {
       backdrop: 'static',
       keyboard: false,
       centered: true
     })
+  }
+
+  public agregarCliente(): void {
+    let date = new Date();
+    let fechaActual = new Date(date);
+    this.nuevoCliente.patchValue({ 
+      fechaAlta : fechaActual.toISOString(),
+      fechaActualizacion : fechaActual.toISOString(),
+      activo : 1
+    });
+    this._clientesService.postClientes(this.nuevoCliente.value).subscribe((cliente) => {
+      this.clientes.push(cliente);
+    });
+    this._cerrar();
+  }
+
+  public ActualizarCliente_Modal(cliente): void {
+    this.actualizarCliente.patchValue(cliente);
+    this.currentModal = this.modalService.open(this.actualizarModal, {
+      backdrop: 'static',
+      keyboard: false,
+      centered: true
+    });
+  }
+
+  public ActualizarCliente(): void {
+    let date = new Date();
+    let fechaActual = new Date(date);
+    this.actualizarCliente.patchValue({
+      fechaActualizacion: fechaActual.toISOString()
+    });
+    this._clientesService.putCliente(this.actualizarCliente.value).subscribe();
+    this.clientes.forEach((element, index) => {
+      if( element.idCliente == this.actualizarCliente.get('idCliente').value ) {
+        this.clientes.splice(index,1);
+        this.clientes.push(new ClienteModel(this.actualizarCliente.value));
+      }
+    });
+    this.clientes.sort((((a, b) => Number(a.idCliente) - Number(b.idCliente) )));
+    this._cerrar();
   }
 }
