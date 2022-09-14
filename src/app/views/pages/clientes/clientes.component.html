@@ -29,7 +29,7 @@
                     <h6 class="card-title">Clientes</h6>
                     <div class="table-responsive">
                         <ngx-datatable class="bootstrap" [rows]="clientes" [loadingIndicator]="loadingIndicator" [columnMode]="ColumnMode.force" [footerHeight]="50" [limit]="10" rowHeight="auto">
-                            <ngx-datatable-column [width]="25" name="Id" prop="idCliente"></ngx-datatable-column>
+                            <ngx-datatable-column [maxWidth]="30" name="Id" prop="idCliente"></ngx-datatable-column>
                             <ngx-datatable-column name="Nombre" prop="nombre"></ngx-datatable-column>
                             <ngx-datatable-column name="Razon Social" prop="razonSocial"></ngx-datatable-column>
                             <ngx-datatable-column name="Contacto" prop="contacto"></ngx-datatable-column>
@@ -46,11 +46,11 @@
                                 </ng-template>
                             </ngx-datatable-column>
                             <ngx-datatable-column name="Tipo de Cliente" prop="tipoCliente.descripcion"></ngx-datatable-column>
-                            <ngx-datatable-column [width]="200" name="Acciones">
+                            <ngx-datatable-column [minWidth]="200" name="Acciones">
                                 <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
                                     <span>
                                       <div class="btn-group" role="group" aria-label="Basic example">
-                                        <button type="button" (click)="actualizarCliente(row)" class="btn btn-warning">Editar</button>
+                                        <button type="button" (click)="onActualizar(row)" class="btn btn-warning">Editar</button>
                                         <button type="button" class="btn btn-danger">Eliminar</button>
                                       </div>
                                     </span>
@@ -126,5 +126,66 @@
             </form>
         </div>
     </div>
-
+</ng-template>
+<!-- MODAL ACTUALIZAR -->
+<ng-template #actualizarModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="modalActualizar">Actualizar</h5>
+        <button type="button" class="close" (click)="modal.close('by: close icon')" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body">
+        <div class="container">
+            <form (ngSubmit)="onSubmit()" [formGroup]="nuevoCliente">
+                <div class="form-group ">
+                    <label>Nombre</label>
+                    <input type="text" formControlName="nombre" value="title" id="nombre" name="nombre" class="form-control" required />
+                    <p class="text-danger mt-1" *ngIf="nuevoCliente.get('nombre')?.errors">Requerido</p>
+                    <label>Razon Social</label>
+                    <input type="text" formControlName="razonSocial" id="razonSocial" name="razonSocial" class="form-control" required />
+                    <p class="text-danger mt-1" *ngIf="nuevoCliente.get('razonSocial')?.errors">Requerido</p>
+                    <label>Contacto</label>
+                    <input type="text" formControlName="contacto" id="contacto" name="contacto" class="form-control" required />
+                    <p class="text-danger mt-1" *ngIf="nuevoCliente.get('contacto')?.errors">Requerido</p>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div>
+                                <label>Es Persona Moral</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label">
+                                <input type="radio" class="form-check-input"  value="1"  [checked]=" nuevoCliente.get('esPersonaMoral').value == 1 ? true : false " >
+                                <i class="input-frame">Si</i>
+                            </label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <label class="form-check-label">
+                                <input type="radio" class="form-check-input" value="2" [checked]=" nuevoCliente.get('esPersonaMoral').value == 2 ? true : false ">
+                                <i class="input-frame">No</i>
+                            </label>
+                            </div>
+                            <p class="text-danger mt-1" *ngIf="nuevoCliente.get('esPersonaMoral')?.errors">Requerido</p>
+                        </div>
+                        <div class="col-sm-6">
+                            <label>Telefono</label>
+                            <input class="form-control" type="tel" mask="(000) 000 00 00" formControlName="telefono" [showMaskTyped]="true" required />
+                            <p class="text-danger mt-1" *ngIf="nuevoCliente.get('telefono')?.errors">Requerido</p>
+                        </div>
+                    </div>
+                    <label>Correo Electronico</label>
+                    <input type="text" formControlName="mail" id="mail" name="mail" class="form-control" required placeholder="ejemplo@ejemplo.com" />
+                    <p class="text-danger mt-1" *ngIf="nuevoCliente.get('mail')?.errors">Requerido</p>
+                    <label>Tipo de Cliente</label>
+                    <ng-select [items]="tipoClientes" bindLabel="descripcion" bindValue="idTipoCliente" placeholder="type to search" formControlName="idTipoCliente">
+                    </ng-select>
+                    <p class="text-danger mt-1" *ngIf="nuevoCliente.get('idTipoCliente')?.errors">Requerido</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="nuevoCliente.invalid">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </ng-template>

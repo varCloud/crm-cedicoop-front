@@ -17,9 +17,12 @@ export class ClientesComponent implements OnInit {
   
   nuevoCliente: FormGroup;
   idActualizar: Number;
+
+  personaMoral: string[] = ['Si','No']
  
   /************PROPIEDADES PARA EL MODAL**********/
   @ViewChild('lgModal') lgModal: any;
+  @ViewChild('actualizarModal') actualizarModal: any;
   currentModal: NgbModalRef;
   title = 'Agregar'
   /********PROPPIEDAD PARA LA TABLA******** */
@@ -86,6 +89,16 @@ export class ClientesComponent implements OnInit {
       fechaActualizacion : fechaActual.toISOString()
     });
     this._clientesService.postClientes(this.nuevoCliente.value).subscribe();
+  }
+
+  public onActualizar(cliente): void {
+    this.nuevoCliente.patchValue(cliente);
+    this.currentModal = this.modalService.open(this.actualizarModal, {
+      backdrop: 'static',
+      keyboard: false,
+      centered: true
+    });
+    //this.actualizarCliente(cliente);
   }
 
   public onAgregar(): void {
