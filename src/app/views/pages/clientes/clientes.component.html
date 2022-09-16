@@ -35,6 +35,11 @@
                             <ngx-datatable-column name="Contacto" prop="contacto"></ngx-datatable-column>
                             <ngx-datatable-column name="Telefono" prop="telefono"></ngx-datatable-column>
                             <ngx-datatable-column name="Mail" prop="mail"></ngx-datatable-column>
+                            <ngx-datatable-column name="Persona Moral" prop="esPersonaMoral">
+                                <ng-template let-value="value" ngx-datatable-cell-template>
+                                    {{value==1 ? 'Si' : 'No' }}
+                                </ng-template>
+                            </ngx-datatable-column>
                             <ngx-datatable-column name="Fecha de alta" prop="fechaAlta">
                                 <ng-template let-value="value" ngx-datatable-cell-template>
                                     {{value | date: 'MM/dd/yyyy'}}
@@ -51,7 +56,7 @@
                                     <span>
                                       <div class="btn-group" role="group" aria-label="Basic example">
                                         <button type="button" (click)="ActualizarCliente_Modal(row)" class="btn btn-warning">Editar</button>
-                                        <button type="button" class="btn btn-danger">Eliminar</button>
+                                        <button type="button" (click)="EliminarCliente_Modal(row)" class="btn btn-danger">Eliminar</button>
                                       </div>
                                     </span>
                                 </ng-template>
@@ -183,9 +188,26 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
-                    <button type="submit" class="btn btn-primary" [disabled]="actualizarCliente.invalid">Guardar</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="actualizarCliente.invalid">Editar</button>
                 </div>
             </form>
+        </div>
+    </div>
+</ng-template>
+
+<!-- MODAL ELIMINAR -->
+<ng-template #eliminarModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="modalElinar">Eliminar</h5>
+        <button type="button" class="close" (click)="modal.close('by: close icon')" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    </div>
+    <div class="modal-body">
+        <div class="container" style="text-align: center;">
+            <h6>Estas seguro en elimnar?</h6>
+            <button type="button" class="btn btn-secondary " (click)="modal.close('by: close button')">Cerrar</button>
+            <button type="button" class="btn btn-primary" (click)="EliminarCliente()">Elimnar</button>
         </div>
     </div>
 </ng-template>
