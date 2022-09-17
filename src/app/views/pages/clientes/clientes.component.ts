@@ -72,7 +72,7 @@ export class ClientesComponent implements OnInit {
       fechaActualizacion: [""],
       activo: [""],
       idCliente: [""],
-      tipoCliente: [""]
+      TipoClientes: [""]
     });
   }
 
@@ -135,8 +135,6 @@ export class ClientesComponent implements OnInit {
     this.clientes.map((element, index) => {
       if (element.idCliente == this.actualizarCliente.get('idCliente').value) {
         this.clientes.splice(index, 1);
-        console.log(this.actualizarCliente.value)
-        console.log(new ClienteModel(this.actualizarCliente.value))
         this.clientes.push(new ClienteModel(this.actualizarCliente.value));
       }
     })

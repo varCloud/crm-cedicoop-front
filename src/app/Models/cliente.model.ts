@@ -11,7 +11,7 @@ export interface Cliente {
     fechaAlta: Date;
     fechaActualizacion: Date;
     idTipoCliente: Number;
-    tipoCliente: Object;
+    TipoClientes: Object;
 }
 
 export class ClienteModel implements Cliente {
@@ -26,7 +26,7 @@ export class ClienteModel implements Cliente {
     fechaAlta: Date;
     fechaActualizacion: Date;
     idTipoCliente: Number;
-    tipoCliente: Object;
+    TipoClientes: Object;
 
     constructor(item: any) {
         this.idCliente= item.idCliente;
@@ -40,6 +40,6 @@ export class ClienteModel implements Cliente {
         this.fechaAlta= item.fechaAlta;
         this.fechaActualizacion= item.fechaActualizacion;
         this.idTipoCliente= item.idTipoCliente;
-        this.tipoCliente = item.TipoClientes;
+        this.TipoClientes = item.TipoClientes;
     }
 }
