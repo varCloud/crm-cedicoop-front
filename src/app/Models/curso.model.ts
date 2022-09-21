@@ -1,4 +1,3 @@
-import { timeStamp } from "console";
 import { isThisTypeNode } from "typescript";
 
 export interface Curso {
