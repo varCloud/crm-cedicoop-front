@@ -10,8 +10,9 @@ export class TipoClienteModel implements TipoCliente{
     activo: Number;
 
     constructor(item:any) {
-        this.idTipoCliente = item.idTipoCliente ;
-        this.descripcion = item.descripcion;
-        this.activo = item.activo;
+        
+        this.idTipoCliente = item.idTipoCliente ?? this.idTipoCliente;
+        this.descripcion = item.descripcion ?? this.descripcion;
+        this.activo = item.activo ?? this.activo;
     }
 }
