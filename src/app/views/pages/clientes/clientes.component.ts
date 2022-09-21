@@ -78,7 +78,7 @@ export class ClientesComponent implements OnInit {
 
   public getClientes() {
     this._clientesService.getClientes().subscribe((clientes: Array<ClienteModel>) => {
-      this.clientes = clientes.filter((item) => item.activo !== 0);   //eliminar los que tienes activo = 0
+      this.clientes = clientes.filter((item) => item.activo !== 0);   //eliminar los que tienen activo = 0
     })
   }
 
@@ -109,8 +109,8 @@ export class ClientesComponent implements OnInit {
       fechaActualizacion: fechaActual.toISOString(),
       activo: 1
     });
-    this._clientesService.postClientes(this.nuevoCliente.value).subscribe((cliente) => {
-      this.clientes.push(cliente);
+    this._clientesService.postClientes(this.nuevoCliente.value).subscribe(() => {
+      this.getClientes();
     });
     this._cerrar();
   }
@@ -130,15 +130,9 @@ export class ClientesComponent implements OnInit {
     this.actualizarCliente.patchValue({
       fechaActualizacion: fechaActual.toISOString()
     });
-    this._clientesService.putCliente(this.actualizarCliente.value).subscribe()
-
-    this.clientes.map((element, index) => {
-      if (element.idCliente == this.actualizarCliente.get('idCliente').value) {
-        this.clientes.splice(index, 1);
-        this.clientes.push(new ClienteModel(this.actualizarCliente.value));
-      }
+    this._clientesService.putCliente(this.actualizarCliente.value).subscribe( () => {
+      this.getClientes();
     })
-    this.clientes.sort((((a, b) => Number(a.idCliente) - Number(b.idCliente))));
     this._cerrar();
   }
 
@@ -157,12 +151,10 @@ export class ClientesComponent implements OnInit {
     this.eliminarCliente.patchValue({
       fechaActualizacion: fechaActual.toISOString()
     });
-    this._clientesService.deleteCliente(this.eliminarCliente.value).subscribe();
-    this.clientes.forEach((element, index) => {
-      if (element.idCliente == this.eliminarCliente.get('idCliente').value) {
-        this.clientes.splice(index, 1);
-      }
-    });
+    this._clientesService.deleteCliente(this.eliminarCliente.value).subscribe( () => {
+      this.getClientes();
+    }
+    );
     this._cerrar();
   }
 }

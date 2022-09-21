@@ -31,8 +31,11 @@ export class ClientesService {
             clientes.push(new ClienteModel(element))
           });
           return clientes;
-        })
-      )
+        }),
+        tap(() => {
+            this._refresh.next()
+        }),
+        )
   }
 
   public postClientes(cliente: any) {
