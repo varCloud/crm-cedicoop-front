@@ -3,13 +3,18 @@ import { retry, map } from 'rxjs/operators';
 import { CONSTANTS } from './../../../../core/constants/constants';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CursosService {
-
+  private _refresh = new Subject<void>();
   constructor(private _httpClient: HttpClient) {
+  }
+  get refresh() {
+    return this._refresh;
   }
   //stream ------ ------ ------------------ -------------- ------------------- ----------- ------------ ----------
   public getCursos() {

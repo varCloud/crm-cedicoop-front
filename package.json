@@ -61,7 +61,7 @@
     "sequelize": "^6.21.4",
     "simple-datatables": "^2.1.13",
     "sqlite3": "^5.0.11",
-    "sweetalert2": "^10.13.0",
+    "sweetalert2": "^10.16.9",
     "tslib": "^2.1.0",
     "zone.js": "~0.11.3"
   },
