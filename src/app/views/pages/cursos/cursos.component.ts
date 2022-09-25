@@ -20,7 +20,7 @@ export class CursosComponent implements OnInit {
   actualizarCurso: FormGroup;
   elminarCurso: FormGroup;
   subscription: Subscription;
-  cont= 0;
+  divHoras = document.getElementById('horas')
 
   @ViewChild('wizardForm') wizardForm: WizardComponent;
   /************PROPIEDADES PARA EL MODAL**********/
@@ -59,8 +59,9 @@ export class CursosComponent implements OnInit {
       costo: ["", Validators.required],
       capacidad: ["", Validators.required],
       lugar: ["", Validators.required],
+      dias: ["",Validators.required],
       horarios: this.formBuilder.array([]),
-      dias: ["",],
+      horario: ["",],
       fechaAlta: ["",],
       idCurso: [""],
       activo: [""]
@@ -69,7 +70,6 @@ export class CursosComponent implements OnInit {
 
   public nuevoHorario(): FormGroup{
     return this.formBuilder.group({
-      dia: ["",],
       inicio: ["", Validators.required],
       final: ["", Validators.required]
     })
@@ -78,12 +78,11 @@ export class CursosComponent implements OnInit {
     return this.nuevoCurso.get('horarios') as FormArray
   }
 
-  public addHorario(i:number) {
-    if(this.cont == i) {
-      this.horarios.push(this.nuevoHorario())
-      console.log(i)
-      this.cont++;
-    }
+  public addHorario() {
+    this.horarios.push(this.nuevoHorario())
+  }
+  public deleteHorario() {
+    this.horarios.clear();
   }
 
   public getCursos(){
@@ -112,17 +111,30 @@ export class CursosComponent implements OnInit {
       fechaAlta: fechaAlta.toISOString(),
       activo: 1
     })
-    /*this._cursosService.postCurso(this.nuevoCurso.value).subscribe(()=> {
-      this.getCursos();
-    })*/
-    console.log(this.nuevoCurso.value);
-   //this.wizardForm.goToNextStep();
-    if(this.nuevoCurso.valid){
-    }
+    let dia = this.nuevoCurso.get('dias').value;
+    dia.forEach(element => {
+      this.addHorario();
+    });
+  }
+
+  private _stringHora(hora:any){
+    let hora_string ='';
+    hora_string += `${hora.hour}:${hora.minute}`;
+    return hora_string;
   }
 
   public agregar_page2():void {
-    console.log(this.nuevoCurso);
+    let horario= '';
+    this.nuevoCurso.get('horarios').value.forEach( (item,index) => {
+      horario += `${this.nuevoCurso.get('dias').value[index]}-${this._stringHora(this.nuevoCurso.get('horarios').value[index].inicio)}-${this._stringHora(this.nuevoCurso.get('horarios').value[index].final)}|`
+    });
+    this.nuevoCurso.patchValue({
+      horario: horario
+    })
+    console.log(this.nuevoCurso.value)
+    /*this._cursosService.postCurso(this.nuevoCurso.value).subscribe(()=> {
+      this.getCursos();
+    })*/
   }
 
   public eliminar_modal(): void {

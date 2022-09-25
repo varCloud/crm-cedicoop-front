@@ -111,18 +111,26 @@
             <aw-wizard-step stepTitle="Horas">
                 <div class="container">
                     <form (ngSubmit)="agregar_page2()" [formGroup]="nuevoCurso">
-                        <div formArrayName="horarios">
-                            <div *ngFor="let horario of horarios?.controls; index as n">
-                                <div [formGroupName]="n">
-                                    <ngb-timepicker formControlName="inicio" [meridian]="true"></ngb-timepicker>
-                                    <ngb-timepicker formControlName="final" [meridian]="true"></ngb-timepicker>
+                        <div formArrayName="horarios" id="horas">
+                            <div *ngFor="let horario of horarios.controls; index as i">
+                                <div [formGroupName]="i">
+                                    <i>{{nuevoCurso.get('dias').value[i]}}</i>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <ngb-timepicker formControlName="inicio" [meridian]="true"></ngb-timepicker>
+                                            <p class="text-danger mt-1" *ngIf="horario.get('inicio')?.errors">Requerido</p>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <ngb-timepicker formControlName="final" [meridian]="true"></ngb-timepicker>
+                                            <p class="text-danger mt-1" *ngIf="horario.get('final')?.errors">Requerido</p>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <p class="text-danger mt-1" *ngIf="nuevoCurso.get('descripcion')?.errors">Requerido</p>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
-                            <button type="button" class="btn btn-secondary" [awGoToStep]="{stepIndex: 0}">Regresar</button>
+                            <button type="button" class="btn btn-secondary" [awGoToStep]="{stepIndex: 0}" (click)="deleteHorario()">Regresar</button>
                             <button type="submit" class="btn btn-primary">Guardar</button>
                         </div>
                     </form>
