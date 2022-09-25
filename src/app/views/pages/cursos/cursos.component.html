@@ -23,7 +23,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-lg-12">
-                        <button type="button" class="btn btn-primary float-right" (click)="onAgregar()">Agregar</button>
+                        <button type="button" class="btn btn-primary float-right" (click)="Agregar_Modal()">Agregar</button>
                     </div>
                 </div>
                 <div class="row">
@@ -45,10 +45,11 @@
                             <ngx-datatable-column [minWidth]="200" name="Acciones">
                                 <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
                                     <span>
-                                      <div class="btn-group" role="group" aria-label="Basic example">
-                                        <button type="button" class="btn btn-warning">Editar</button>
-                                        <button type="button" (click)="eliminar_modal()" class="btn btn-danger">Eliminar</button>
-                                      </div>
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <button type="button" class="btn btn-warning">Editar</button>
+                                            <button type="button" (click)="eliminar_modal()"
+                                                class="btn btn-danger">Eliminar</button>
+                                        </div>
                                     </span>
                                 </ng-template>
                             </ngx-datatable-column>
@@ -59,3 +60,80 @@
         </div>
     </div>
 </div>
+
+<!-- MODAL AGREGAR -->
+
+<ng-template #agregarModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Agregar</h5>
+        <button type="button" class="close" (click)="modal.close('by: close icon')" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <aw-wizard #wizardForm>
+            <aw-wizard-step stepTitle="Datos Generales">
+                <div class="container">
+                    <form (ngSubmit)="agregar_page1()" [formGroup]="nuevoCurso">
+                        <div class="form-group ">
+                            <label>Nombre del Curso</label>
+                            <input type="text" formControlName="nombreCurso" id="nombreCurso" name="nombreCurso" class="form-control" required />
+                            <p class="text-danger mt-1" *ngIf="nuevoCurso.get('nombreCurso')?.errors">Requerido</p>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>Costo</label>
+                                    <input type="number" formControlName="costo" id="costo" name="costo" class="form-control" required />
+                                    <p class="text-danger mt-1" *ngIf="nuevoCurso.get('costo')?.errors">Requerido</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Capacidad</label>
+                                    <input type="number" formControlName="capacidad" id="capacidad" name="capacidad" class="form-control" required />
+                                    <p class="text-danger mt-1" *ngIf="nuevoCurso.get('capacidad')?.errors">Requerido</p>
+                                </div>
+                            </div>
+                            <label>Lugar</label>
+                            <input type="text" formControlName="lugar" id="lugar" name="lugar" class="form-control" required />
+                            <p class="text-danger mt-1" *ngIf="nuevoCurso.get('lugar')?.errors">Requerido</p>
+                            <label>Descripcion</label>
+                            <input type="text" formControlName="descripcion" id="descripcion" name="descripcion" class="form-control" required />
+                            <p class="text-danger mt-1" *ngIf="nuevoCurso.get('descripcion')?.errors">Requerido</p>
+                            <label>Horario</label>
+                            <ng-select [items]="dias" formControlName="dias" [multiple]=true [closeOnSelect]="false" [searchable]="false" placeholder="Seleccione los días"></ng-select>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
+                            <button type="submit" class="btn btn-primary" [awGoToStep]="{stepIndex: 1}">Continuar</button>
+                        </div>
+                    </form>
+                </div>
+            </aw-wizard-step>
+
+            <aw-wizard-step stepTitle="Horas">
+                <div class="container">
+                    <form (ngSubmit)="agregar_page2()" [formGroup]="nuevoCurso">
+                        <div formArrayName="horarios">
+                            <div *ngFor="let horario of horarios?.controls; index as n">
+                                <div [formGroupName]="n">
+                                    <ngb-timepicker formControlName="inicio" [meridian]="true"></ngb-timepicker>
+                                    <ngb-timepicker formControlName="final" [meridian]="true"></ngb-timepicker>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="text-danger mt-1" *ngIf="nuevoCurso.get('descripcion')?.errors">Requerido</p>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
+                            <button type="button" class="btn btn-secondary" [awGoToStep]="{stepIndex: 0}">Regresar</button>
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </aw-wizard-step>
+        </aw-wizard>
+    </div>
+</ng-template>
+
+
+<!--
+    <div class="mt-2">
+                            
+-->

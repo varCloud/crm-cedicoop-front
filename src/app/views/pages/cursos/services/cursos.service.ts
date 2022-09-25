@@ -16,7 +16,6 @@ export class CursosService {
   get refresh() {
     return this._refresh;
   }
-  //stream ------ ------ ------------------ -------------- ------------------- ----------- ------------ ----------
   public getCursos() {
     return this._httpClient.get(`${CONSTANTS.API_BASE_URL}${CONSTANTS.API_CURSOS_URL}`)
       .pipe(
@@ -30,5 +29,19 @@ export class CursosService {
         })
 
       )
+  }
+  public postCurso(curso: any){
+    return this._httpClient.post(`${CONSTANTS.API_BASE_URL}${CONSTANTS.API_CURSOS_URL}`,curso)
+    .pipe(
+      retry(1),
+      map((data: any)=> {
+        let curso: CursoModel;
+        curso = new CursoModel(data);
+        return curso;
+      }),
+      tap(()=>{
+        this._refresh.next()
+      })
+    )
   }
 }

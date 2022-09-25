@@ -8,6 +8,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgxMaskModule } from 'ngx-mask';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { CustomFormsModule } from 'ngx-custom-validators';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { ArchwizardModule } from 'angular-archwizard';
 
 @NgModule({
   declarations: [CursosComponent],
@@ -20,7 +22,8 @@ import { CustomFormsModule } from 'ngx-custom-validators';
     ReactiveFormsModule,
     NgxMaskModule.forRoot({ validation: true}), // Ngx-mask
     NgSelectModule,
-
+    NgbModule,
+    ArchwizardModule
   ]
 })
 export class CursosModule { }
