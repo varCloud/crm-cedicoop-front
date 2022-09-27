@@ -109,10 +109,9 @@
                     </form>
                 </div>
             </aw-wizard-step>
-            <aw-wizard-step stepTitle="Horas">
+            <aw-wizard-step stepTitle="Horario">
                 <div class="container">
                     <form (ngSubmit)="agregar_page2()" [formGroup]="nuevoCurso">
-                        <label>Horario</label>
                         <div formArrayName="horarios" id="horas">
                             <div *ngFor="let horario of horarios.controls; index as i">
                                 <div [formGroupName]="i">
@@ -191,7 +190,7 @@
                     </form>
                 </div>
             </aw-wizard-step>
-            <aw-wizard-step stepTitle="Horas">
+            <aw-wizard-step stepTitle="Horario">
                 <div class="container">
                     <form (ngSubmit)="actualizar()" [formGroup]="actualizarCurso">
                         <div formArrayName="horarios">

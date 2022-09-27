@@ -154,32 +154,32 @@ export class CursosComponent implements OnInit {
 
   public Actualizar_Modal(curso): void {
     this.actualizarCurso.reset();
-    let horario = [];
-    let dia = [];
+    let horario = new Array(7);
     curso.horario.split("|").map((horarios)=>{
       let split = horarios.split('-')
       if( split.length == 3){
-        dia.push(split[0])
-        let hora_inicio = split[1].split(":");
-        let hora_final = split[2].split(":");
-        horario.push({
-          activo: true,
-          inicio: {
-            hour: parseInt(hora_inicio[0]),
-            minute: parseInt(hora_inicio[1])
-          },
-          final: {
-            hour: parseInt(hora_final[0]),
-            minute: parseInt(hora_final[1])
-          }
-        })
+          let hora_inicio = split[1].split(":");
+          let hora_final = split[2].split(":");
+          this.dias.map((element, index) =>{
+            if (element == split[0])
+              horario[index] = {
+                activo: true,
+                inicio: {
+                  hour: parseInt(hora_inicio[0]),
+                  minute: parseInt(hora_inicio[1])
+                },
+                final: {
+                  hour: parseInt(hora_final[0]),
+                  minute: parseInt(hora_final[1])
+                }
+              }
+          })
       }
     })
     this.actualizarCurso.patchValue(curso);
     for(let i=0;i<this.dias.length;i++){
       this.addHorario(false)
     }
-    this.dias_temp = dia;
     this.actualizarCurso.patchValue({
       horarios: horario
     });
