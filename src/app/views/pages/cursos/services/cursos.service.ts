@@ -1,7 +1,7 @@
 import { CursoModel } from './../../../../Models/curso.model';
 import { retry, map } from 'rxjs/operators';
 import { CONSTANTS } from './../../../../core/constants/constants';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -43,5 +43,31 @@ export class CursosService {
         this._refresh.next()
       })
     )
+  }
+  public putCursos(cursos: any) {
+    return this._httpClient.put(`${CONSTANTS.API_BASE_URL}${CONSTANTS.API_CURSOS_URL}`, cursos)
+      .pipe(
+        tap(() => {
+          this._refresh.next();
+        })
+      )
+  }
+  
+  public deleteCurso(curso: any) {
+    let options = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+      }),
+      body: {
+        idCurso: curso.idCurso
+      }
+    }
+    console.log(curso)
+    return this._httpClient.delete(`${CONSTANTS.API_BASE_URL}${CONSTANTS.API_CURSOS_URL}`, options)
+      .pipe(
+        tap(() => {
+          this._refresh.next();
+        })
+      )
   }
 }
