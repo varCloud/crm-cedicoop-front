@@ -1,13 +1,13 @@
-import { FormArray, FormGroup, FormControl,FormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormGroup,FormBuilder, Validators } from '@angular/forms';
 import { CursoModel } from './../../../Models/curso.model';
 import { CursosService } from './services/cursos.service';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { ColumnMode } from '@swimlane/ngx-datatable';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { ColumnMode, columnsByPin } from '@swimlane/ngx-datatable';
+import { map, debounceTime } from 'rxjs/operators';
+import { fromEvent } from 'rxjs';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2/dist/sweetalert2.js'; 
 import { WizardComponent} from 'angular-archwizard';
-import { BlockUI, NgBlockUI } from 'ng-if-block-ui';
 
 
 @Component({
@@ -15,13 +15,17 @@ import { BlockUI, NgBlockUI } from 'ng-if-block-ui';
   templateUrl: './cursos.component.html',
   styleUrls: ['./cursos.component.scss']
 })
-export class CursosComponent implements OnInit {
+export class CursosComponent implements OnInit, AfterViewInit {
+
+  public temp: Array<object> = [];
+  public columns: Array<object>;
+
 
   nuevoCurso: FormGroup;
   actualizarCurso: FormGroup;
   eliminarCurso: FormGroup;
-  subscription: Subscription;
   divHoras = document.getElementById('horas')
+  @ViewChild('search', {static: false}) search: any;
 
   @ViewChild('wizardForm') wizardForm: WizardComponent;
   /************PROPIEDADES PARA EL MODAL**********/
@@ -47,6 +51,16 @@ export class CursosComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.columns = [
+      {name:"Id", prop:"idCurso"},
+      {name:"Nombre", prop:"nombreCurso"},
+      {name:"Descripcion", prop:"descripcion"},
+      {name:"Horario", prop:"horario"},
+      {name:"Lugar", prop:"lugar"},
+      {name:"Capacidad", prop:"capacidad"},
+      {name:"Costo", prop:"costo"},
+      {name:"Fecha Alta", prop:"fechaAlta"},
+    ]
     this.getCursos();
     this.nuevoCurso = this.initForm();
     this.actualizarCurso = this.initForm();
@@ -98,6 +112,7 @@ export class CursosComponent implements OnInit {
   public getCursos(){
       this._cursosService.getCursos().subscribe((cursos : Array<CursoModel>)=>{
           this.cursos = cursos.filter((item) => item.activo !==0)
+          this.temp = this.cursos;
       })
   }
 
@@ -226,5 +241,29 @@ export class CursosComponent implements OnInit {
         )  
       }  
     })  
+  }
+
+  ngAfterViewInit(): void {
+    fromEvent(this.search.nativeElement, 'keydown')
+      .pipe(
+        debounceTime(550),
+        map((x) => x['target']['value'])
+      )
+      .subscribe((value) => {
+        this.updateFilter(value);
+      });
+  }
+  
+  updateFilter(val: any) {
+    const value = val.toString().toLowerCase().trim();
+    const count = this.columns.length;
+    const keys = Object.keys(this.temp[0]);
+    this.cursos = this.temp.filter((item) => {
+      for (let i = 0; i < count; i++) {
+        if ((item[keys[i]] && item[keys[i]].toString().toLowerCase().indexOf(value) !== -1) || !value) {
+          return true;
+        }
+      }
+    });
   }
 }
