@@ -1,54 +1,232 @@
 <nav class="page-breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a routerLink=".">CRM-CEDICOOP & BLUECLOUD</a></li>
-    <li class="breadcrumb-item active" aria-current="page">CURSOS</li>
-  </ol>
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink=".">CRM-CEDICOOP & BLUECLOUD</a></li>
+        <li class="breadcrumb-item active" aria-current="page">CURSOS</li>
+    </ol>
 </nav>
 
 <div class="row">
-  <div class="col-md-12 grid-margin stretch-card">
-    <div class="card">
-      <div class="card-body">
-        <h4 class="card-title">Cursos</h4>
-        <p class="card-description mb-0">Este espacio de trabajo esta desinado a crear cursos.</p>
-      </div>
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Cursos</h4>
+                <p class="card-description mb-0">Este espacio de trabajo esta desinado a crear cursos.</p>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
-
-
 <div class="row inbox-wrapper">
-  <div class="col-lg-12">
-    <div class="card">
-      <div class="card-body">
-        <div class="row">
-          <div class="col-lg-12">
-            <button type="button" class="btn btn-primary float-right" (click)="onAgregar()">Agregar</button>
-          </div>
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-lg-2 ">
+                        <input #search id="search" type="text" class="form-control " placeholder="Search" aria-label="Search" aria-describedby="basic-addon1" />
+                    </div>
+                    <div class="col-lg-12">
+                        <button type="button" class="btn btn-primary float-right" (click)="Agregar_Modal()">Agregar</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <h6 class="card-title">Cursos</h6>
+                    <div class="table-responsive">
+                        <ngx-datatable class="bootstrap" [columns]="columns" [rows]="cursos" [loadingIndicator]="loadingIndicator" [columnMode]="ColumnMode.force" [footerHeight]="50" [limit]="10" rowHeight="auto">
+                            <ngx-datatable-column [maxWidth]="70" name="Id" prop="idCurso"></ngx-datatable-column>
+                            <ngx-datatable-column name="Nombre" prop="nombreCurso"></ngx-datatable-column>
+                            <ngx-datatable-column name="Descripcion" prop="descripcion"></ngx-datatable-column>
+                            <ngx-datatable-column name="Horario" prop="horario">
+                                <ng-template let-value="value" ngx-datatable-cell-template>
+                                    <ul class="custom" *ngFor="let valor of value | fomatoHorario ">
+                                        <li class="custom">{{valor}}</li>
+                                    </ul>
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column name="Lugar" prop="lugar"></ngx-datatable-column>
+                            <ngx-datatable-column name="Capacidad" prop="capacidad"></ngx-datatable-column>
+                            <ngx-datatable-column name="Costo" prop="costo"></ngx-datatable-column>
+                            <ngx-datatable-column name="Fecha Alta" prop="fechaAlta">
+                                <ng-template let-value="value" ngx-datatable-cell-template>
+                                    {{value | date: 'MM/dd/yyyy'}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [minWidth]="200" name="Acciones">
+                                <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                    <span>
+                                        <div class="btn-group" role="group" aria-label="Basic example">
+                                            <button type="button" (click)="Actualizar_Modal(row)" class="btn btn-warning">Editar</button>
+                                            <button type="button" (click)="eliminar_modal(row)"class="btn btn-danger">Eliminar</button>
+                                        </div>
+                                    </span>
+                                </ng-template>
+                            </ngx-datatable-column>
+                        </ngx-datatable>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="row">
-          <h6 class="card-title">Usuarios</h6>
-          <div class="table-responsive">
-            <ngx-datatable
-            class="bootstrap"
-            [rows]="rows"
-            [loadingIndicator]="loadingIndicator"
-            [columnMode]="ColumnMode.force"
-            [footerHeight]="50"
-            [limit]="10"
-            rowHeight="auto"
-          >
-            <ngx-datatable-column name="Id"  prop="idCurso"></ngx-datatable-column>
-            <ngx-datatable-column name="Nombre"  prop="descripcion"></ngx-datatable-column>
-            <ngx-datatable-column name="Costo" prop="costo"></ngx-datatable-column>
-            <ngx-datatable-column name="Mail" prop="mail"></ngx-datatable-column>
-            <ngx-datatable-column name="Usuario" prop="usuario"></ngx-datatable-column>
-            <ngx-datatable-column name="Rol" prop="Roles.descripcion"></ngx-datatable-column>
-            <ngx-datatable-column name="Acciones"></ngx-datatable-column>
-          </ngx-datatable>
-          </div>
-        </div>
-      </div>
     </div>
-  </div>
 </div>
+
+<!-- MODAL AGREGAR -->
+
+<ng-template #agregarModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Agregar</h5>
+        <button type="button" class="close" (click)="modal.close('by: close icon');deleteHorario()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <aw-wizard #wizardForm>
+            <aw-wizard-step stepTitle="Datos Generales">
+                <div class="container">
+                    <form (ngSubmit)="agregar_page1()" [formGroup]="nuevoCurso">
+                        <div class="form-group ">
+                            <label>Nombre del Curso</label>
+                            <input type="text" formControlName="nombreCurso" id="nombreCurso" name="nombreCurso" class="form-control" required />
+                            <p class="text-danger mt-1" *ngIf="nuevoCurso.get('nombreCurso')?.errors">Requerido</p>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>Costo</label>
+                                    <input type="number" formControlName="costo" id="costo" name="costo" class="form-control" required />
+                                    <p class="text-danger mt-1" *ngIf="nuevoCurso.get('costo')?.errors">Requerido</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Capacidad</label>
+                                    <input type="number" formControlName="capacidad" id="capacidad" name="capacidad" class="form-control" required />
+                                    <p class="text-danger mt-1" *ngIf="nuevoCurso.get('capacidad')?.errors">Requerido</p>
+                                </div>
+                            </div>
+                            <label>Lugar</label>
+                            <input type="text" formControlName="lugar" id="lugar" name="lugar" class="form-control" required />
+                            <p class="text-danger mt-1" *ngIf="nuevoCurso.get('lugar')?.errors">Requerido</p>
+                            <label>Descripcion</label>
+                            <input type="text" formControlName="descripcion" id="descripcion" name="descripcion" class="form-control" required />
+                            <p class="text-danger mt-1" *ngIf="nuevoCurso.get('descripcion')?.errors">Requerido</p>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button'); deleteHorario()">Cerrar</button>
+                            <button type="submit" class="btn btn-primary" [awGoToStep]="{stepIndex: 1}">Continuar</button>
+                        </div>
+                    </form>
+                </div>
+            </aw-wizard-step>
+            <aw-wizard-step stepTitle="Horario">
+                <div class="container">
+                    <form (ngSubmit)="agregar_page2()" [formGroup]="nuevoCurso">
+                        <div formArrayName="horarios" id="horas">
+                            <div *ngFor="let horario of horarios.controls; index as i">
+                                <div [formGroupName]="i">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                          <input formControlName="activo" type="checkbox" class="form-check-input">
+                                          <i class="input-frame"></i>
+                                         {{dias[i]}}
+                                        </label>
+                                    </div>
+                                    <div class="row" *ngIf="horario.get('activo').value == true">
+                                        <div class="col-sm-6">
+                                            <ngb-timepicker formControlName="inicio" [meridian]="true"></ngb-timepicker>
+                                            <p class="text-danger mt-1" *ngIf="horario.get('inicio')?.errors">Requerido</p>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <ngb-timepicker formControlName="final" [meridian]="true"></ngb-timepicker>
+                                            <p class="text-danger mt-1" *ngIf="horario.get('final')?.errors">Requerido</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button'); deleteHorario()">Cerrar</button>
+                            <button type="button" class="btn btn-secondary" [awGoToStep]="{stepIndex: 0}" (click)="deleteHorario()">Regresar</button>
+                            <button type="submit" class="btn btn-primary" [disabled]="horarios.invalid">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </aw-wizard-step>
+        </aw-wizard>
+    </div>
+</ng-template>
+
+<!-- MODAL ACTUALIZAR -->
+<ng-template #actualizarModal let-modal>
+    <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Actualizar</h5>
+        <button type="button" class="close" (click)="modal.close('by: close icon'); deleteHorario()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <aw-wizard #wizardForm>
+            <aw-wizard-step stepTitle="Datos Generales">
+                <div class="container">
+                    <form [formGroup]="actualizarCurso">
+                        <div class="form-group ">
+                            <label>Nombre del Curso</label>
+                            <input type="text" formControlName="nombreCurso" id="nombreCurso" name="nombreCurso" class="form-control" required />
+                            <p class="text-danger mt-1" *ngIf="actualizarCurso.get('nombreCurso')?.errors">Requerido</p>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>Costo</label>
+                                    <input type="number" formControlName="costo" id="costo" name="costo" class="form-control" required />
+                                    <p class="text-danger mt-1" *ngIf="actualizarCurso.get('costo')?.errors">Requerido</p>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Capacidad</label>
+                                    <input type="number" formControlName="capacidad" id="capacidad" name="capacidad" class="form-control" required />
+                                    <p class="text-danger mt-1" *ngIf="actualizarCurso.get('capacidad')?.errors">Requerido</p>
+                                </div>
+                            </div>
+                            <label>Lugar</label>
+                            <input type="text" formControlName="lugar" id="lugar" name="lugar" class="form-control" required />
+                            <p class="text-danger mt-1" *ngIf="actualizarCurso.get('lugar')?.errors">Requerido</p>
+                            <label>Descripcion</label>
+                            <input type="text" formControlName="descripcion" id="descripcion" name="descripcion" class="form-control" required />
+                            <p class="text-danger mt-1" *ngIf="actualizarCurso.get('descripcion')?.errors">Requerido</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button'); deleteHorario(false)">Cerrar</button>
+                            <button type="submit" class="btn btn-primary" [disabled]="actualizarCurso.invalid" [awGoToStep]="{stepIndex: 1}">Continuar</button>
+                        </div>
+                    </form>
+                </div>
+            </aw-wizard-step>
+            <aw-wizard-step stepTitle="Horario">
+                <div class="container">
+                    <form (ngSubmit)="actualizar()" [formGroup]="actualizarCurso">
+                        <div formArrayName="horarios">
+                            <div *ngFor="let horario of horarios_actualizar?.controls; index as i">
+                                <div [formGroupName]="i">
+                                    <div class="form-check">
+                                        <label class="form-check-label">
+                                          <input formControlName="activo" type="checkbox" class="form-check-input">
+                                          <i class="input-frame"></i>
+                                         {{dias[i]}}
+                                        </label>
+                                    </div>
+                                    <div class="row" *ngIf="horario.get('activo').value == true">
+                                        <div class="col-sm-6">
+                                            <ngb-timepicker formControlName="inicio" [meridian]="true"></ngb-timepicker>
+                                            <p class="text-danger mt-1" *ngIf="horario.get('inicio')?.errors">Requerido</p>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <ngb-timepicker formControlName="final" [meridian]="true"></ngb-timepicker>
+                                            <p class="text-danger mt-1" *ngIf="horario.get('final')?.errors">Requerido</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button'); deleteHorario(false)">Cerrar</button>
+                            <button type="button" class="btn btn-secondary" [awGoToStep]="{stepIndex: 0}">Regresar</button>
+                            <button type="submit" class="btn btn-primary" [disabled]="horarios_actualizar.invalid">Guardar</button>
+                        </div>
+                    </form>
+                </div>
+            </aw-wizard-step>
+        </aw-wizard>
+    </div>
+</ng-template>

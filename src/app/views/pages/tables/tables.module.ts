@@ -6,7 +6,7 @@ import { TablesComponent } from './tables.component';
 import { BasicTableComponent } from './basic-table/basic-table.component';
 import { DataTableComponent } from './data-table/data-table.component';
 import { NgxDatatableComponent } from './ngx-datatable/ngx-datatable.component';
-
+import { DataTable } from "simple-datatables";
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 const routes: Routes = [

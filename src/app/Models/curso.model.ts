@@ -27,15 +27,15 @@ export class CursoModel implements Curso {
   nombreCurso: string;
 
   constructor(item: any) {
-    this.activo = item.activo
-    this.capacidad = item.capacidad;
-    this.costo = item.costo;
-    this.descripcion = item.descripcion;
-    this.fechaAlta = item.fechaAlta;
-    this.horario = item.horario;
-    this.idCurso = item.idCurso;
-    this.lugar = item.lugar;
-    this.nombreCurso = item.nombreCurso;
+    this.activo = item.activo ?? this.activo;
+    this.capacidad = item.capacidad ?? this.capacidad;
+    this.costo = item.costo ?? this.costo;
+    this.descripcion = item.descripcion ?? this.descripcion;
+    this.fechaAlta = item.fechaAlta ?? this.fechaAlta;
+    this.horario = item.horario ?? this.horario;
+    this.idCurso = item.idCurso ?? this.idCurso;
+    this.lugar = item.lugar ?? this.lugar;
+    this.nombreCurso = item.nombreCurso ?? this.nombreCurso;
 
   }
 

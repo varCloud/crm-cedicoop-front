@@ -23,7 +23,6 @@ export class ClientesComponent implements OnInit {
   nuevoCliente: FormGroup;
   actualizarCliente: FormGroup;
   eliminarCliente: FormGroup;
-  idActualizar: Number;
   subscription: Subscription;
 
   /************PROPIEDADES PARA EL MODAL**********/
