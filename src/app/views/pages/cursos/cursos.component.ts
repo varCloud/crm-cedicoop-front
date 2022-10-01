@@ -7,6 +7,7 @@ import { Subscription } from 'rxjs';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2/dist/sweetalert2.js'; 
 import { WizardComponent} from 'angular-archwizard';
+import { BlockUI, NgBlockUI } from 'ng-if-block-ui';
 
 
 @Component({
@@ -41,18 +42,15 @@ export class CursosComponent implements OnInit {
     private modalService: NgbModal,
     public formBuilder: FormBuilder
   ) {
-
+    
 
   }
 
   ngOnInit(): void {
-      this.getCursos();
-      this.nuevoCurso = this.initForm();
-      this.actualizarCurso = this.initForm();
-      this.eliminarCurso = this.initForm();
-      this.subscription = this._cursosService.refresh.subscribe(()=> {
-        this.cursos = [...this.cursos];
-      })
+    this.getCursos();
+    this.nuevoCurso = this.initForm();
+    this.actualizarCurso = this.initForm();
+    this.eliminarCurso = this.initForm();
   }
 
   initForm(): FormGroup {
@@ -136,7 +134,6 @@ export class CursosComponent implements OnInit {
   public agregar_page2():void {
     let horario= '';
     this.nuevoCurso.get('horarios').value.forEach( (item,index) => {
-      console.log(item)
       if(item.activo == true){
         horario += `${this.dias[index]}-${this._stringHora(item.inicio)}-${this._stringHora(item.final)}|`
       }
@@ -144,7 +141,6 @@ export class CursosComponent implements OnInit {
     this.nuevoCurso.patchValue({
       horario: horario
     })
-    console.log(this.nuevoCurso.value)
     this._cursosService.postCurso(this.nuevoCurso.value).subscribe(()=> {
       this.getCursos();
     });
@@ -153,7 +149,7 @@ export class CursosComponent implements OnInit {
   }
 
   public Actualizar_Modal(curso): void {
-    this.actualizarCurso.reset();
+    this.actualizarCurso.patchValue(curso);
     let horario = new Array(7);
     curso.horario.split("|").map((horarios)=>{
       let split = horarios.split('-')
@@ -176,7 +172,6 @@ export class CursosComponent implements OnInit {
           })
       }
     })
-    this.actualizarCurso.patchValue(curso);
     for(let i=0;i<this.dias.length;i++){
       this.addHorario(false)
     }
@@ -190,6 +185,15 @@ export class CursosComponent implements OnInit {
     });
   }
   public actualizar(): void{
+    let horario= '';
+    this.actualizarCurso.get('horarios').value.forEach( (item,index) => {
+      if(item.activo == true){
+        horario += `${this.dias[index]}-${this._stringHora(item.inicio)}-${this._stringHora(item.final)}|`
+      }
+    });
+    this.actualizarCurso.patchValue({
+      horario: horario
+    })
     this._cursosService.putCursos(this.actualizarCurso.value).subscribe( () => {
       this.getCursos();
     })

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { CursosRoutingModule } from './cursos-routing.module';
 import { CursosComponent } from './cursos.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -24,7 +23,7 @@ import { PipePipe } from './pipe.pipe';
     NgxMaskModule.forRoot({ validation: true}), // Ngx-mask
     NgSelectModule,
     NgbModule,
-    ArchwizardModule
+    ArchwizardModule,
   ]
 })
 export class CursosModule { }
