@@ -1,0 +1,93 @@
+<nav class="page-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink=".">CRM-CEDICOOP & BLUECLOUD</a></li>
+    <li class="breadcrumb-item active" aria-current="page">COTIZACIONES</li>
+  </ol>
+</nav>
+
+<div class="row">
+  <div class="col-md-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Cotizaciones</h4>
+        <p class="card-description mb-0">Vamos crea una cotizacion para un cliente o un prospecto...!!</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="row inbox-wrapper">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row justify-content-end mb-5">
+          <div class="col-lg-3 ">
+              <input #search id="search" type="text" class="form-control " placeholder="Buscar" aria-label="Search" aria-describedby="basic-addon1" />
+          </div>
+          <div class="col-lg-auto">
+              <button type="button" class="btn btn-primary float-right" (click)="Agregar_Modal()">Agregar</button>
+          </div>
+      </div>
+
+        <ul ngbNav #horizontalCenterNav="ngbNav" class="nav-tabs justify-content-center">
+          <li [ngbNavItem]="1">
+            <a ngbNavLink>Cptizaciones De Prospectos</a>
+            <ng-template ngbNavContent>
+              <ng-container [ngTemplateOutlet]="actionOptionsWeightsSection"
+                [ngTemplateOutletContext]="{ lstCotizaciones: listCotizaciones }">
+              </ng-container>
+            </ng-template>
+          </li>
+          <li [ngbNavItem]="2">
+            <a ngbNavLink>Cotizaciones De Clientes</a>
+            <ng-template ngbNavContent>
+              <ng-container [ngTemplateOutlet]="actionOptionsWeightsSection"
+                [ngTemplateOutletContext]="{ lstCotizaciones: listCotizaciones }">
+              </ng-container>
+            </ng-template>
+          </li>
+        </ul>
+
+        <div [ngbNavOutlet]="horizontalCenterNav" class="border border-top-0 p-3"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<ng-template #actionOptionsWeightsSection let-lstCotizaciones="lstCotizaciones">
+  <div class="row">
+    <div class="table-responsive">
+      <ngx-datatable class="bootstrap" [rows]="lstCotizaciones" [loadingIndicator]="loadingIndicator"
+        [columnMode]="ColumnMode.force" [footerHeight]="50" [limit]="10" rowHeight="auto">
+        <ngx-datatable-column [maxWidth]="70" name="Id" prop="idCurso"></ngx-datatable-column>
+        <ngx-datatable-column name="Nombre" prop="nombreCurso"></ngx-datatable-column>
+        <ngx-datatable-column name="Descripcion" prop="descripcion"></ngx-datatable-column>
+        <ngx-datatable-column name="Horario" prop="horario">
+          <ng-template let-value="value" ngx-datatable-cell-template>
+            <ul class="custom" *ngFor="let valor of value ">
+              <li class="custom">{{valor}}</li>
+            </ul>
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Lugar" prop="lugar"></ngx-datatable-column>
+        <ngx-datatable-column name="Capacidad" prop="capacidad"></ngx-datatable-column>
+        <ngx-datatable-column name="Costo" prop="costo"></ngx-datatable-column>
+        <ngx-datatable-column name="Fecha Alta" prop="fechaAlta">
+          <ng-template let-value="value" ngx-datatable-cell-template>
+            {{value | date: 'MM/dd/yyyy'}}
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column [minWidth]="200" name="Acciones">
+          <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+            <span>
+              <div class="btn-group" role="group" aria-label="Basic example">
+                <button type="button" class="btn btn-warning">Editar</button>
+                <button type="button" class="btn btn-danger">Eliminar</button>
+              </div>
+            </span>
+          </ng-template>
+        </ngx-datatable-column>
+      </ngx-datatable>
+    </div>
+  </div>
+</ng-template>

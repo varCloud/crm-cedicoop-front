@@ -21,6 +21,11 @@ export const MENU: MenuItem[] = [
     link: '/cursos'
   },
   {
+    label: 'Cotizaciones',
+    icon: 'file-text',
+    link: '/cotizaciones'
+  },
+  {
     label: 'Clientes',
     icon: 'user',
     link: '/clientes'

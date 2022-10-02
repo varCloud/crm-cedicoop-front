@@ -1,0 +1,106 @@
+<nav class="page-breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a routerLink=".">CRM-CEDICOOP & BLUECLOUD</a></li>
+    <li class="breadcrumb-item">COTIZACIONES</li>
+    <li class="breadcrumb-item active" aria-current="page">AGREGAR NUEVA</li>
+  </ol>
+</nav>
+
+<div class="row inbox-wrapper">
+  <div class="col-lg-12">
+    <div class="card">
+      <div class="card-body">
+        <div class="row mb-5">
+          <div class="col-lg-12">
+            <h3>Nueva Cotización</h3>
+          </div>
+        </div>
+        <div class="row mb-5">
+          <div class="col-lg-12">
+            <form novalidate >
+              <div class="row">
+                <div class="col-lg-6 grid-margin stretch-card">
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="form-group">
+                        <label for="exampleInputUsername1">Required</label>
+                        <input class="form-control" type="text" placeholder="required" ngModel name="requried"
+                          #requried="ngModel" required />
+                        <p class="text-danger mt-1" *ngIf="requried?.errors?.required">required error</p>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputUsername1">Minimum Length</label>
+                        <input class="form-control" type="text" placeholder="minimum length: 5" ngModel name="minlength"
+                          #minlength="ngModel" minlength="5" />
+                        <p class="text-danger mt-1" *ngIf="minlength?.errors?.minlength">minlength error</p>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputUsername1">Maximum Length</label>
+                        <input class="form-control" type="text" placeholder="maximum length: 5" ngModel name="maxlength"
+                          #maxlength="ngModel" maxlength="5" />
+                        <p class="text-danger mt-1" *ngIf="maxlength?.errors?.maxlength">maxlength error</p>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputUsername1">Pattern</label>
+                        <input class="form-control" type="text" placeholder="pattern: [a-z]{6}" ngModel name="pattern"
+                          #pattern="ngModel" pattern="[a-z]{6}" />
+                        <p class="text-danger mt-1" *ngIf="pattern?.errors?.pattern">pattern error</p>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputUsername1">Base64</label>
+                        <input class="form-control" type="text" placeholder="base64" ngModel name="base64"
+                          #base64="ngModel" base64 />
+                        <p class="text-danger mt-1" *ngIf="base64?.errors?.base64">base64 error</p>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputUsername1">Date</label>
+                        <input class="form-control" type="text" placeholder="date" ngModel name="date" #date="ngModel"
+                          date />
+                        <p class="text-danger mt-1" *ngIf="date?.errors?.date">date error</p>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputUsername1">Date ISO</label>
+                        <input class="form-control" type="text" placeholder="date ISO" ngModel name="dateISO"
+                          #dateISO="ngModel" dateISO />
+                        <p class="text-danger mt-1" *ngIf="dateISO?.errors?.dateISO">dateISO error</p>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputUsername1">Digits</label>
+                        <input class="form-control" type="text" placeholder="digits" ngModel name="digits"
+                          #digits="ngModel" digits />
+                        <p class="text-danger mt-1" *ngIf="digits?.errors?.digits">digits error</p>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputUsername1">Email</label>
+                        <input class="form-control" type="text" placeholder="email" ngModel name="email"
+                          #email="ngModel" ngvemail />
+                        <p class="text-danger mt-1" *ngIf="email?.errors?.email">email error</p>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputUsername1">Equal</label>
+                        <input class="form-control" type="text" placeholder="should be equlal to 'aabbcc'" ngModel
+                          name="equal" #equal="ngModel" [equal]="'aabbcc'" />
+                        <p class="text-danger mt-1" *ngIf="equal?.errors?.equal">equal error</p>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputUsername1">Not Equal</label>
+                        <input class="form-control" type="text" placeholder="shouldn't be equal to 'aabbcc'" ngModel
+                          name="notEqual" #notEqual="ngModel" [notEqual]="'aabbcc'" />
+                        <p class="text-danger mt-1" *ngIf="notEqual?.errors?.notEqual">notEqual error</p>
+                      </div>
+                      <div class="form-group">
+                        <label for="exampleInputUsername1">Credit Card</label>
+                        <input class="form-control" type="text" placeholder="credit card" ngModel name="creditCard"
+                          #creditCard="ngModel" creditCard />
+                        <p class="text-danger mt-1" *ngIf="creditCard?.errors?.creditCard">creditCard error</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
