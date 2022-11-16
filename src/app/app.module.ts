@@ -12,11 +12,13 @@ import { ErrorPageComponent } from './views/pages/error-page/error-page.componen
 
 import { HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
 import { HttpClientModule } from '@angular/common/http';
+import { TipoClienteComponent } from './views/pages/tipo-cliente/tipo-cliente.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ErrorPageComponent,
+    TipoClienteComponent,
   ],
   imports: [
     BrowserModule,

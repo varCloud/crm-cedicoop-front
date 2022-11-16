@@ -9,7 +9,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { CustomFormsModule } from 'ngx-custom-validators';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ArchwizardModule } from 'angular-archwizard';
-import { PipePipe } from '../../../core/pipes/pipe.pipe';
+import { PipePipe } from '../../../core/pipes/horario.pipe';
 
 @NgModule({
   declarations: [CursosComponent, PipePipe],

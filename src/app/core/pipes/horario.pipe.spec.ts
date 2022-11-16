@@ -1,4 +1,4 @@
-import { PipePipe } from './pipe.pipe';
+import { PipePipe } from './horario.pipe';
 
 describe('PipePipe', () => {
   it('create an instance', () => {
