@@ -3,6 +3,7 @@ import { retry, map } from 'rxjs/operators';
 import { CONSTANTS } from './../../../../core/constants/constants';
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { constants } from 'buffer';
 
 @Injectable({
   providedIn: 'root'
@@ -50,5 +51,14 @@ export class CursosService {
       }
     }
     return this._httpClient.delete(`${CONSTANTS.API_BASE_URL}${CONSTANTS.API_CURSOS_URL}`, options)
+  }
+
+  public getCSV(cursos: any){
+    return this._httpClient.get(`${CONSTANTS.API_BASE_URL}${CONSTANTS.API_CSV}${CONSTANTS.API_CURSOS_URL}`,cursos)
+    .pipe(
+      map((data: any) => {
+        return data;
+      })
+    )
   }
 }

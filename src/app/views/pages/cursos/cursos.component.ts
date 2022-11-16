@@ -1,4 +1,4 @@
-import { FormArray, FormGroup,FormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CursoModel } from './../../../Models/curso.model';
 import { CursosService } from './services/cursos.service';
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
@@ -6,8 +6,9 @@ import { ColumnMode, columnsByPin } from '@swimlane/ngx-datatable';
 import { map, debounceTime } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
 import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
-import Swal from 'sweetalert2/dist/sweetalert2.js'; 
-import { WizardComponent} from 'angular-archwizard';
+import Swal from 'sweetalert2/dist/sweetalert2.js';
+import { WizardComponent } from 'angular-archwizard';
+import { take } from 'rxjs/operators';
 
 
 @Component({
@@ -25,7 +26,7 @@ export class CursosComponent implements OnInit, AfterViewInit {
   actualizarCurso: FormGroup;
   eliminarCurso: FormGroup;
   divHoras = document.getElementById('horas')
-  @ViewChild('search', {static: false}) search: any;
+  @ViewChild('search', { static: false }) search: any;
 
   @ViewChild('wizardForm') wizardForm: WizardComponent;
   /************PROPIEDADES PARA EL MODAL**********/
@@ -38,28 +39,29 @@ export class CursosComponent implements OnInit, AfterViewInit {
   reorderable = true;
   ColumnMode = ColumnMode;
   cursos = [];
+  todos_cursos = [];
   horario_final = [];
-  dias = ['Lunes','Martes','Miercoles','Jueves','Viernes','Sabado','Domingo']
+  dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo']
   dias_temp = []
-   constructor(
-    private _cursosService:CursosService,
+  constructor(
+    private _cursosService: CursosService,
     private modalService: NgbModal,
     public formBuilder: FormBuilder
   ) {
-    
+
 
   }
 
   ngOnInit(): void {
     this.columns = [
-      {name:"Id", prop:"idCurso"},
-      {name:"Nombre", prop:"nombreCurso"},
-      {name:"Descripcion", prop:"descripcion"},
-      {name:"Horario", prop:"horario"},
-      {name:"Lugar", prop:"lugar"},
-      {name:"Capacidad", prop:"capacidad"},
-      {name:"Costo", prop:"costo"},
-      {name:"Fecha Alta", prop:"fechaAlta"},
+      { name: "Id", prop: "idCurso" },
+      { name: "Nombre", prop: "nombreCurso" },
+      { name: "Descripcion", prop: "descripcion" },
+      { name: "Horario", prop: "horario" },
+      { name: "Lugar", prop: "lugar" },
+      { name: "Capacidad", prop: "capacidad" },
+      { name: "Costo", prop: "costo" },
+      { name: "Fecha Alta", prop: "fechaAlta" },
     ]
     this.getCursos();
     this.nuevoCurso = this.initForm();
@@ -82,41 +84,42 @@ export class CursosComponent implements OnInit, AfterViewInit {
     });
   }
 
-  public nuevoHorario(): FormGroup{
+  public nuevoHorario(): FormGroup {
     return this.formBuilder.group({
-      activo: ['', ],
-      inicio: [{hour: 0, minute: 0}, Validators.required],
-      final: [{hour: 0, minute: 0}, Validators.required]
+      activo: ['',],
+      inicio: [{ hour: 0, minute: 0 }, Validators.required],
+      final: [{ hour: 0, minute: 0 }, Validators.required]
     })
   }
-  get horarios(): FormArray{
+  get horarios(): FormArray {
     return this.nuevoCurso.get('horarios') as FormArray
   }
-  get horarios_actualizar(): FormArray{
+  get horarios_actualizar(): FormArray {
     return this.actualizarCurso.get('horarios') as FormArray
   }
 
   public addHorario(agregar = true) {
-    if(agregar)
+    if (agregar)
       this.horarios.push(this.nuevoHorario())
     else
       this.horarios_actualizar.push(this.nuevoHorario())
   }
   public deleteHorario(agregar = true) {
-    if(agregar)
+    if (agregar)
       this.horarios.clear();
     else
       this.horarios_actualizar.clear();
   }
 
-  public getCursos(){
-      this._cursosService.getCursos().subscribe((cursos : Array<CursoModel>)=>{
-          this.cursos = cursos.filter((item) => item.activo !==0)
-          this.temp = this.cursos;
-      })
+  public getCursos() {
+    this._cursosService.getCursos().subscribe((cursos: Array<CursoModel>) => {
+      this.todos_cursos = cursos
+      this.cursos = cursos.filter((item) => item.activo !== 0)
+      this.temp = this.cursos;
+    })
   }
 
-  private _cerrar():void {
+  private _cerrar(): void {
     this.currentModal.close();
   }
 
@@ -128,35 +131,35 @@ export class CursosComponent implements OnInit, AfterViewInit {
       centered: true
     })
   }
-  public agregar_page1():void {
+  public agregar_page1(): void {
     let date = new Date();
     let fechaAlta = new Date(date);
     this.nuevoCurso.patchValue({
       fechaAlta: fechaAlta.toISOString(),
       activo: 1
     })
-    for(let i=0; i<this.dias.length; i++){
+    for (let i = 0; i < this.dias.length; i++) {
       this.addHorario();
     }
   }
 
-  private _stringHora(hora:any){
-    let hora_string ='';
+  private _stringHora(hora: any) {
+    let hora_string = '';
     hora_string += `${hora.hour}:${hora.minute}`;
     return hora_string;
   }
 
-  public agregar_page2():void {
-    let horario= '';
-    this.nuevoCurso.get('horarios').value.forEach( (item,index) => {
-      if(item.activo == true){
+  public agregar_page2(): void {
+    let horario = '';
+    this.nuevoCurso.get('horarios').value.forEach((item, index) => {
+      if (item.activo == true) {
         horario += `${this.dias[index]}-${this._stringHora(item.inicio)}-${this._stringHora(item.final)}|`
       }
     });
     this.nuevoCurso.patchValue({
       horario: horario
     })
-    this._cursosService.postCurso(this.nuevoCurso.value).subscribe(()=> {
+    this._cursosService.postCurso(this.nuevoCurso.value).subscribe(() => {
       this.getCursos();
     });
     this._cerrar();
@@ -166,28 +169,28 @@ export class CursosComponent implements OnInit, AfterViewInit {
   public Actualizar_Modal(curso): void {
     this.actualizarCurso.patchValue(curso);
     let horario = new Array(7);
-    curso.horario.split("|").map((horarios)=>{
+    curso.horario.split("|").map((horarios) => {
       let split = horarios.split('-')
-      if( split.length == 3){
-          let hora_inicio = split[1].split(":");
-          let hora_final = split[2].split(":");
-          this.dias.map((element, index) =>{
-            if (element == split[0])
-              horario[index] = {
-                activo: true,
-                inicio: {
-                  hour: parseInt(hora_inicio[0]),
-                  minute: parseInt(hora_inicio[1])
-                },
-                final: {
-                  hour: parseInt(hora_final[0]),
-                  minute: parseInt(hora_final[1])
-                }
+      if (split.length == 3) {
+        let hora_inicio = split[1].split(":");
+        let hora_final = split[2].split(":");
+        this.dias.map((element, index) => {
+          if (element == split[0])
+            horario[index] = {
+              activo: true,
+              inicio: {
+                hour: parseInt(hora_inicio[0]),
+                minute: parseInt(hora_inicio[1])
+              },
+              final: {
+                hour: parseInt(hora_final[0]),
+                minute: parseInt(hora_final[1])
               }
-          })
+            }
+        })
       }
     })
-    for(let i=0;i<this.dias.length;i++){
+    for (let i = 0; i < this.dias.length; i++) {
       this.addHorario(false)
     }
     this.actualizarCurso.patchValue({
@@ -199,48 +202,48 @@ export class CursosComponent implements OnInit, AfterViewInit {
       centered: true
     });
   }
-  public actualizar(): void{
-    let horario= '';
-    this.actualizarCurso.get('horarios').value.forEach( (item,index) => {
-      if(item.activo == true){
+  public actualizar(): void {
+    let horario = '';
+    this.actualizarCurso.get('horarios').value.forEach((item, index) => {
+      if (item.activo == true) {
         horario += `${this.dias[index]}-${this._stringHora(item.inicio)}-${this._stringHora(item.final)}|`
       }
     });
     this.actualizarCurso.patchValue({
       horario: horario
     })
-    this._cursosService.putCursos(this.actualizarCurso.value).subscribe( () => {
+    this._cursosService.putCursos(this.actualizarCurso.value).subscribe(() => {
       this.getCursos();
     })
     this._cerrar();
   }
 
   public eliminar_modal(curso): void {
-    Swal.fire({  
+    Swal.fire({
       title: 'Estas seguro de eliminar?',
-      icon: 'warning',  
-      showCancelButton: true,  
-      confirmButtonText: 'Si',  
-      cancelButtonText: 'No'  
-    }).then((result) => {  
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Si',
+      cancelButtonText: 'No'
+    }).then((result) => {
       if (result.value) {
         this.eliminarCurso.patchValue(curso)
-        this._cursosService.deleteCurso(this.eliminarCurso.value).subscribe(()=>{
+        this._cursosService.deleteCurso(this.eliminarCurso.value).subscribe(() => {
           this.getCursos();
-          Swal.fire(  
-            'Eliminado!',  
-            '',  
+          Swal.fire(
+            'Eliminado!',
+            '',
             'success'
-          )  
+          )
         })
-      } else if (result.dismiss === Swal.DismissReason.cancel) {  
-        Swal.fire(  
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
+        Swal.fire(
           'Cancelado',
           '',
           'error'
-        )  
-      }  
-    })  
+        )
+      }
+    })
   }
 
   ngAfterViewInit(): void {
@@ -253,7 +256,7 @@ export class CursosComponent implements OnInit, AfterViewInit {
         this.updateFilter(value);
       });
   }
-  
+
   updateFilter(val: any) {
     const value = val.toString().toLowerCase().trim();
     const count = this.columns.length;
@@ -265,5 +268,32 @@ export class CursosComponent implements OnInit, AfterViewInit {
         }
       }
     });
+  }
+
+  Descargar_CSV() {
+    this._cursosService.getCSV(this.todos_cursos).pipe(
+      take(1),
+    )
+      .subscribe((csv: any) => {
+        const a = document.createElement("a");
+        csv = this.ConvertToCSV(csv);
+        const blod = new Blob([csv], { type: 'text/csv' }),
+          url = window.URL.createObjectURL(blod);
+        a.href = url;
+        let fecha = new Date();
+        a.download = "cursos_" + fecha.toLocaleDateString() + ".csv";
+        a.click();
+        window.URL.revokeObjectURL(url);
+        a.remove();
+      });
+  }
+
+  ConvertToCSV(objArray) {
+    let text = Object.keys(objArray[0]).toString();
+    text +='\n';
+    for(let i in objArray){
+      text += Object.values(objArray[i]).toString() + "\n"
+    }
+    return text
   }
 }
