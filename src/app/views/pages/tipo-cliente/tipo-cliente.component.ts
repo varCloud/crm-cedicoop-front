@@ -73,6 +73,9 @@ export class TipoClienteComponent implements OnInit {
     })
   }
   public agregar(): void{
+    this.nuevoTipoCliente.patchValue({
+      activo: 1
+    })
     this._tipoClienteService.postTipoCliente(this.nuevoTipoCliente.value).pipe(
       take(1)
     ).subscribe(() => {
