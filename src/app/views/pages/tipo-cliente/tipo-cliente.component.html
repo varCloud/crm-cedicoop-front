@@ -24,7 +24,7 @@
                         <input #search id="search" type="text" class="form-control " placeholder="Search" aria-label="Search" aria-describedby="basic-addon1" />
                     </div>
                     <div class="col-lg-auto">
-                        <button type="button" class="btn btn-primary float-right">Agregar</button>
+                        <button type="button" (click)="agregar_Modal()" class="btn btn-primary float-right">Agregar</button>
                     </div>
                 </div>
                 <div class="row">
@@ -36,8 +36,8 @@
                             <ngx-datatable-column [maxWidth]="250" name=" Acciones ">
                                 <ng-template let-value="value " let-row="row " ngx-datatable-cell-template>
                                     <div style="display: flex; grid-gap: 10px; ">
-                                        <button type="button " class="btn btn-warning ">Editar</button>
-                                        <button type="button " class="btn btn-danger ">Eliminar</button>
+                                        <button type="button" (click)="Actualizar_Modal(row)" class="btn btn-warning ">Editar</button>
+                                        <button type="button " (click)="eliminar_modal(row)" class="btn btn-danger ">Eliminar</button>
                                     </div>
                                 </ng-template>
                             </ngx-datatable-column>
@@ -63,7 +63,18 @@
         </button>
     </div>
     <div class="modal-body ">
-
+        <div class="container">
+            <form [formGroup]="nuevoTipoCliente" (ngSubmit)="agregar()">
+                <div class="form-group">
+                    <label>Descripcion</label>
+                    <input type="text" formControlName="descripcion" class="form-control" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="nuevoTipoCliente.invalid">Continuar</button>
+                </div>
+            </form>
+        </div>
     </div>
 </ng-template>
 
@@ -76,6 +87,17 @@
         </button>
     </div>
     <div class="modal-body ">
-
+        <div class="container">
+            <form [formGroup]="actualizarTipoCliente" (ngSubmit)="actualizar()">
+                <div class="form-group">
+                    <label>Descripcion</label>
+                    <input type="text" formControlName="descripcion" class="form-control" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="actualizarTipoCliente.invalid">Continuar</button>
+                </div>
+            </form>
+        </div>
     </div>
 </ng-template>

@@ -34,7 +34,7 @@
                             <ngx-datatable-column [maxWidth]="70" name="Id" prop="idCurso"></ngx-datatable-column>
                             <ngx-datatable-column name="Nombre" prop="nombreCurso"></ngx-datatable-column>
                             <ngx-datatable-column name="Descripcion" prop="descripcion"></ngx-datatable-column>
-                            <ngx-datatable-column name="Horario" prop="horario">
+                            <ngx-datatable-column [minWidth]="200" name="Horario" prop="horario">
                                 <ng-template let-value="value" ngx-datatable-cell-template>
                                     <ul class="custom" *ngFor="let valor of value | fomatoHorario ">
                                         <li class="custom">{{valor}}</li>
