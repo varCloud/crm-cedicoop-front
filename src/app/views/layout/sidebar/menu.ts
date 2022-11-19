@@ -31,6 +31,11 @@ export const MENU: MenuItem[] = [
     link: '/clientes'
   },
   {
+    label: 'Tipos de Clientes',
+    icon: 'users',
+    link: '/tiposClientes'
+  },
+  {
     label: 'Web Apps',
     isTitle: true
   },

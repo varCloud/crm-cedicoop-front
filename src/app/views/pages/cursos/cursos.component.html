@@ -30,7 +30,7 @@
                 <div class="row">
                     <h6 class="card-title">Cursos</h6>
                     <div class="table-responsive">
-                        <ngx-datatable class="bootstrap" [columns]="columns" [rows]="cursos" [loadingIndicator]="loadingIndicator" [columnMode]="ColumnMode.force" [footerHeight]="50" [limit]="10" rowHeight="auto">
+                        <ngx-datatable [scrollbarH]="true" class="bootstrap" [columns]="columns" [rows]="cursos" [loadingIndicator]="loadingIndicator" [columnMode]="ColumnMode.force" [footerHeight]="50" [limit]="10" rowHeight="auto">
                             <ngx-datatable-column [maxWidth]="70" name="Id" prop="idCurso"></ngx-datatable-column>
                             <ngx-datatable-column name="Nombre" prop="nombreCurso"></ngx-datatable-column>
                             <ngx-datatable-column name="Descripcion" prop="descripcion"></ngx-datatable-column>
