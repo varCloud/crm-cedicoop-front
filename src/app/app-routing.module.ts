@@ -68,6 +68,10 @@ const routes: Routes = [
         path: 'cotizaciones',
         loadChildren: () => import('./views/pages/cotizaciones/cotizaciones.module').then(m => m.CotizacionesModule)
       },
+      {
+        path: 'tiposClientes',
+        loadChildren: () => import('./views/pages/tipo-cliente/tipo-cliente.module').then(m => m.TipoClienteModule)
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       // { path: '**', redirectTo: 'dashboard', pathMatch: 'full' }
     ]

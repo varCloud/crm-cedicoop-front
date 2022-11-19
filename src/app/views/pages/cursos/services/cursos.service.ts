@@ -53,9 +53,10 @@ export class CursosService {
     return this._httpClient.delete(`${CONSTANTS.API_BASE_URL}${CONSTANTS.API_CURSOS_URL}`, options)
   }
 
-  public getCSV(cursos: any){
-    return this._httpClient.get(`${CONSTANTS.API_BASE_URL}${CONSTANTS.API_CSV}${CONSTANTS.API_CURSOS_URL}`,cursos)
+  public getCSV(){
+    return this._httpClient.get(`${CONSTANTS.API_BASE_URL}${CONSTANTS.API_CSV}${CONSTANTS.API_CURSOS_URL}`)
     .pipe(
+      retry(1),
       map((data: any) => {
         return data;
       })

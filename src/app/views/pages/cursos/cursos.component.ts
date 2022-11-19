@@ -39,7 +39,6 @@ export class CursosComponent implements OnInit, AfterViewInit {
   reorderable = true;
   ColumnMode = ColumnMode;
   cursos = [];
-  todos_cursos = [];
   horario_final = [];
   dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo']
   dias_temp = []
@@ -113,7 +112,6 @@ export class CursosComponent implements OnInit, AfterViewInit {
 
   public getCursos() {
     this._cursosService.getCursos().subscribe((cursos: Array<CursoModel>) => {
-      this.todos_cursos = cursos
       this.cursos = cursos.filter((item) => item.activo !== 0)
       this.temp = this.cursos;
     })
@@ -271,7 +269,7 @@ export class CursosComponent implements OnInit, AfterViewInit {
   }
 
   Descargar_CSV() {
-    this._cursosService.getCSV(this.todos_cursos).pipe(
+    this._cursosService.getCSV().pipe(
       take(1),
     )
       .subscribe((csv: any) => {
