@@ -72,6 +72,10 @@ const routes: Routes = [
         path: 'tiposClientes',
         loadChildren: () => import('./views/pages/tipo-cliente/tipo-cliente.module').then(m => m.TipoClienteModule)
       },
+      {
+        path: 'tiposSeguimientos',
+        loadChildren: () => import('./views/pages/tipo-seguimiento/tipo-seguimiento.module').then(m => m.TipoSeguimientoModule)
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       // { path: '**', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
