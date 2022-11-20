@@ -36,6 +36,11 @@ export const MENU: MenuItem[] = [
     link: '/tiposClientes'
   },
   {
+    label: 'Tipos de Seguimientos',
+    icon: 'columns',
+    link: '/tiposSeguimientos'
+  },
+  {
     label: 'Web Apps',
     isTitle: true
   },

@@ -59,8 +59,8 @@ export class TipoClienteComponent implements OnInit {
   }
 
   public getTipoCliente() {
-    this._tipoClienteService.getTipoCliente().subscribe((cursos: Array<TipoClienteModel>) => {
-      this.tipoClientes = cursos.filter((item) => item.activo !== 0)
+    this._tipoClienteService.getTipoCliente().subscribe((tipoCliente: Array<TipoClienteModel>) => {
+      this.tipoClientes = tipoCliente.filter((item) => item.activo !== 0)
       this.temp = this.tipoClientes;
     })
   }
