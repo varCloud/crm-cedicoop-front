@@ -76,6 +76,10 @@ const routes: Routes = [
         path: 'tiposSeguimientos',
         loadChildren: () => import('./views/pages/tipo-seguimiento/tipo-seguimiento.module').then(m => m.TipoSeguimientoModule)
       },
+      {
+        path: 'catIntereses',
+        loadChildren: () => import('./views/pages/cat-intereses/cat-intereses.module').then(m => m.CatInteresesModule)
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       // { path: '**', redirectTo: 'dashboard', pathMatch: 'full' }
     ]
