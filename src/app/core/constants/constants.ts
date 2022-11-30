@@ -6,5 +6,6 @@ export const CONSTANTS = {
   API_CLIENTES_URL:"cliente",
   API_TIPOCLIENTES_URL:"tipoCliente",
   API_TIPOSEGUIMIENTO_URL: "tipoSeguimiento",
-  API_CSV:"csv/"
+  API_CSV:"csv/",
+  API_CATINTERESES_URL: 'catIntereses'
 }
