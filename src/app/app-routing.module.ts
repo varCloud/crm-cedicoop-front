@@ -80,6 +80,11 @@ const routes: Routes = [
         path: 'catIntereses',
         loadChildren: () => import('./views/pages/cat-intereses/cat-intereses.module').then(m => m.CatInteresesModule)
       },
+      {
+        path: 'tiposServicios',
+        loadChildren: () => import('./views/pages/tipo-servicio/tipo-servicio.module').then(m => m.TipoServicioModule)
+
+      },
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       // { path: '**', redirectTo: 'dashboard', pathMatch: 'full' }
     ]

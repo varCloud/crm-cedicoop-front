@@ -46,6 +46,11 @@ export const MENU: MenuItem[] = [
     link: '/catIntereses'
   },
   {
+    label: 'Tipos de Servicios',
+    icon: 'columns',
+    link: '/tiposServicios'
+  },
+  {
     label: 'Web Apps',
     isTitle: true
   },
