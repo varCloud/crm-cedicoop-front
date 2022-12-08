@@ -31,6 +31,11 @@ export const MENU: MenuItem[] = [
     link: '/clientes'
   },
   {
+    label: 'Intereses',
+    icon: 'user',
+    link: '/intereses'
+  },
+  {
     label: 'Tipos de Clientes',
     icon: 'users',
     link: '/tiposClientes'

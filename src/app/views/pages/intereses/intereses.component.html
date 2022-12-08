@@ -1,0 +1,119 @@
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink=".">CRM-CEDICOOP & BLUECLOUD</a></li>
+        <li class="breadcrumb-item active" aria-current="page">INTERESES DEL CLIENTE</li>
+    </ol>
+</nav>
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Tipo de Seguimiento</h4>
+                <p class="card-description mb-0">Este espacio de trabajo esta desinado a crear intereses del cliente.</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row inbox-wrapper">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row justify-content-end mb-5">
+                    <div class="col-lg-3">
+                        <input #search id="search" type="text" class="form-control " placeholder="Search" aria-label="Search" aria-describedby="basic-addon1" />
+                    </div>
+                    <div class="col-lg-auto">
+                        <button type="button" (click)="agregar_Modal()" class="btn btn-primary float-right">Agregar</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <h6 class="card-title">Tipos de Seguimiento</h6>
+                    <div class="table-responsive">
+                        <ngx-datatable [scrollbarH]="true" class="bootstrap" [columns]="columns" [rows]="intereses" [loadingIndicator]="loadingIndicator" [columnMode]="ColumnMode.force" [footerHeight]="50" [limit]="10" rowHeight="auto">
+                            <ngx-datatable-column [maxWidth]="50" name="Id" prop="idIntereseCliente"></ngx-datatable-column>
+                            <ngx-datatable-column name="Clientes" prop="Clientes.nombre"></ngx-datatable-column>
+                            <ngx-datatable-column name="CatIntereses" prop="CatIntereses.descripcion"></ngx-datatable-column>
+                            <ngx-datatable-column name="Fecha Alta" prop="fechaAlta">
+                                <ng-template let-value="value" ngx-datatable-cell-template>
+                                    {{value | date: 'dd/MM/yyyy'}}
+                                </ng-template>
+                            </ngx-datatable-column>
+                            <ngx-datatable-column [maxWidth]="250" name=" Acciones ">
+                                <ng-template let-value="value " let-row="row " ngx-datatable-cell-template>
+                                    <div style="display: flex; grid-gap: 10px; ">
+                                        <button type="button" (click)="Actualizar_Modal(row)" class="btn btn-warning ">Editar</button>
+                                        <button type="button " (click)="eliminar_modal(row)" class="btn btn-danger ">Eliminar</button>
+                                    </div>
+                                </ng-template>
+                            </ngx-datatable-column>
+                        </ngx-datatable>
+                    </div>
+                </div>
+                <div class="row justify-content-end mb-auto ">
+                    <div class="col-lg-auto ">
+                        <button type="button " class="btn btn-primary float-right " (click)="Descargar_CSV() ">Descargar CSV</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- MODAL AGREGAR -->
+    <ng-template #agregarModal let-modal>
+        <div class="modal-header ">
+            <h5 class="modal-title " id="exampleModalLabel ">Agregar</h5>
+            <button type="button " class="close " (click)="modal.close( 'by: close icon') " aria-label="Close ">
+                <span aria-hidden="true ">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body ">
+            <div class="container">
+                <form [formGroup]="nuevoIntereses" (ngSubmit)="agregar()">
+                    <div class="form-group">
+                        <label>Clientes</label>
+                        <ng-select [items]="clientes" bindLabel="nombre" bindValue="idCliente" placeholder="Buscar" formControlName="idCliente"></ng-select>
+                        <p class="text-danger mt-1" *ngIf="nuevoIntereses.get('idCliente')?.errors">Requerido</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Interes</label>
+                        <ng-select [items]="catIntereses" bindLabel="descripcion" bindValue="idCatInteres" placeholder="Buscar" formControlName="idInteres"></ng-select>
+                        <p class="text-danger mt-1" *ngIf="nuevoIntereses.get('idInteres')?.errors">Requerido</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
+                        <button type="submit" class="btn btn-primary" [disabled]="nuevoIntereses.invalid">Continuar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </ng-template>
+
+    <!-- MODAL ACTUALIZAR -->
+    <ng-template #actualizarModal let-modal>
+        <div class="modal-header ">
+            <h5 class="modal-title " id="exampleModalLabel ">Actualizar</h5>
+            <button type="button " class="close " (click)="modal.close( 'by: close icon') " aria-label="Close ">
+                <span aria-hidden="true ">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body ">
+            <div class="container">
+                <form [formGroup]="actualizarIntereses" (ngSubmit)="actualizar()">
+                    <div class="form-group">
+                        <label>Clientes</label>
+                        <ng-select [items]="clientes" bindLabel="nombre" bindValue="idCliente" placeholder="Buscar" formControlName="idCliente"></ng-select>
+                        <p class="text-danger mt-1" *ngIf="actualizarIntereses.get('idCliente')?.errors">Requerido</p>
+                    </div>
+                    <div class="form-group">
+                        <label>Interes</label>
+                        <ng-select [items]="catIntereses" bindLabel="descripcion" bindValue="idCatInteres" placeholder="Buscar" formControlName="idInteres"></ng-select>
+                        <p class="text-danger mt-1" *ngIf="actualizarIntereses.get('idInteres')?.errors">Requerido</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
+                        <button type="submit" class="btn btn-primary" [disabled]="actualizarIntereses.invalid">Continuar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </ng-template>
+</div>
