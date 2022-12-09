@@ -20,7 +20,7 @@
             <div class="card-body">
                 <div class="row justify-content-end mb-5">
                     <div class="col-lg-3">
-                        <input #search id="search" type="text" class="form-control " placeholder="Search" aria-label="Search" aria-describedby="basic-addon1" />
+                        <input #search id="search" type="text" class="form-control " placeholder="Buscar" aria-label="Search" aria-describedby="basic-addon1" />
                     </div>
                     <div class="col-lg-auto">
                         <button type="button" (click)="agregar_Modal()" class="btn btn-primary float-right">Agregar</button>
@@ -57,63 +57,63 @@
             </div>
         </div>
     </div>
-    <!-- MODAL AGREGAR -->
-    <ng-template #agregarModal let-modal>
-        <div class="modal-header ">
-            <h5 class="modal-title " id="exampleModalLabel ">Agregar</h5>
-            <button type="button " class="close " (click)="modal.close( 'by: close icon') " aria-label="Close ">
-                <span aria-hidden="true ">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body ">
-            <div class="container">
-                <form [formGroup]="nuevoIntereses" (ngSubmit)="agregar()">
-                    <div class="form-group">
-                        <label>Clientes</label>
-                        <ng-select [items]="clientes" bindLabel="nombre" bindValue="idCliente" placeholder="Buscar" formControlName="idCliente"></ng-select>
-                        <p class="text-danger mt-1" *ngIf="nuevoIntereses.get('idCliente')?.errors">Requerido</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Interes</label>
-                        <ng-select [items]="catIntereses" bindLabel="descripcion" bindValue="idCatInteres" placeholder="Buscar" formControlName="idInteres"></ng-select>
-                        <p class="text-danger mt-1" *ngIf="nuevoIntereses.get('idInteres')?.errors">Requerido</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
-                        <button type="submit" class="btn btn-primary" [disabled]="nuevoIntereses.invalid">Continuar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </ng-template>
-
-    <!-- MODAL ACTUALIZAR -->
-    <ng-template #actualizarModal let-modal>
-        <div class="modal-header ">
-            <h5 class="modal-title " id="exampleModalLabel ">Actualizar</h5>
-            <button type="button " class="close " (click)="modal.close( 'by: close icon') " aria-label="Close ">
-                <span aria-hidden="true ">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body ">
-            <div class="container">
-                <form [formGroup]="actualizarIntereses" (ngSubmit)="actualizar()">
-                    <div class="form-group">
-                        <label>Clientes</label>
-                        <ng-select [items]="clientes" bindLabel="nombre" bindValue="idCliente" placeholder="Buscar" formControlName="idCliente"></ng-select>
-                        <p class="text-danger mt-1" *ngIf="actualizarIntereses.get('idCliente')?.errors">Requerido</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Interes</label>
-                        <ng-select [items]="catIntereses" bindLabel="descripcion" bindValue="idCatInteres" placeholder="Buscar" formControlName="idInteres"></ng-select>
-                        <p class="text-danger mt-1" *ngIf="actualizarIntereses.get('idInteres')?.errors">Requerido</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
-                        <button type="submit" class="btn btn-primary" [disabled]="actualizarIntereses.invalid">Continuar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </ng-template>
 </div>
+<!-- MODAL AGREGAR -->
+<ng-template #agregarModal let-modal>
+    <div class="modal-header ">
+        <h5 class="modal-title " id="exampleModalLabel ">Agregar</h5>
+        <button type="button " class="close " (click)="modal.close( 'by: close icon') " aria-label="Close ">
+            <span aria-hidden="true ">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body ">
+        <div class="container">
+            <form [formGroup]="nuevoIntereses" (ngSubmit)="agregar()">
+                <div class="form-group">
+                    <label>Clientes</label>
+                    <ng-select [items]="clientes" bindLabel="nombre" bindValue="idCliente" placeholder="Buscar" formControlName="idCliente"></ng-select>
+                    <p class="text-danger mt-1" *ngIf="nuevoIntereses.get('idCliente')?.errors">Requerido</p>
+                </div>
+                <div class="form-group">
+                    <label>Interes</label>
+                    <ng-select [items]="catIntereses" bindLabel="descripcion" bindValue="idCatInteres" placeholder="Buscar" formControlName="idInteres"></ng-select>
+                    <p class="text-danger mt-1" *ngIf="nuevoIntereses.get('idInteres')?.errors">Requerido</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="nuevoIntereses.invalid">Continuar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</ng-template>
+
+<!-- MODAL ACTUALIZAR -->
+<ng-template #actualizarModal let-modal>
+    <div class="modal-header ">
+        <h5 class="modal-title " id="exampleModalLabel ">Actualizar</h5>
+        <button type="button " class="close " (click)="modal.close( 'by: close icon') " aria-label="Close ">
+            <span aria-hidden="true ">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body ">
+        <div class="container">
+            <form [formGroup]="actualizarIntereses" (ngSubmit)="actualizar()">
+                <div class="form-group">
+                    <label>Clientes</label>
+                    <ng-select [items]="clientes" bindLabel="nombre" bindValue="idCliente" placeholder="Buscar" formControlName="idCliente"></ng-select>
+                    <p class="text-danger mt-1" *ngIf="actualizarIntereses.get('idCliente')?.errors">Requerido</p>
+                </div>
+                <div class="form-group">
+                    <label>Interes</label>
+                    <ng-select [items]="catIntereses" bindLabel="descripcion" bindValue="idCatInteres" placeholder="Buscar" formControlName="idInteres"></ng-select>
+                    <p class="text-danger mt-1" *ngIf="actualizarIntereses.get('idInteres')?.errors">Requerido</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="actualizarIntereses.invalid">Continuar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</ng-template>

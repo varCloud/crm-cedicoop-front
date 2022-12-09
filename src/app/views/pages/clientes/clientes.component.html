@@ -20,48 +20,55 @@
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                <div class="row">
-                    <div class="col-lg-12">
+                <div class="row justify-content-end mb-5">
+                    <div class="col-lg-3">
+                        <input #search id="search" type="text" class="form-control " placeholder="Buscar" aria-label="Search" aria-describedby="basic-addon1" />
+                    </div>
+                    <div class="col-lg-auto">
                         <button type="button" class="btn btn-primary float-right" (click)="AgregarCliente_Modal()">Agregar</button>
                     </div>
                 </div>
                 <div class="row">
                     <h6 class="card-title">Clientes</h6>
                     <div class="table-responsive">
-                        <ngx-datatable class="bootstrap" [rows]="clientes" [loadingIndicator]="loadingIndicator" [columnMode]="ColumnMode.force" [footerHeight]="50" [limit]="10" rowHeight="auto">
+                        <ngx-datatable [scrollbarH]="true" class="bootstrap" [rows]="clientes" [columns]="columns" [loadingIndicator]="loadingIndicator" [columnMode]="ColumnMode.force" [footerHeight]="50" [limit]="10" rowHeight="auto">
                             <ngx-datatable-column [maxWidth]="70" name="Id" prop="idCliente"></ngx-datatable-column>
                             <ngx-datatable-column name="Nombre" prop="nombre"></ngx-datatable-column>
                             <ngx-datatable-column name="Razon Social" prop="razonSocial"></ngx-datatable-column>
                             <ngx-datatable-column name="Contacto" prop="contacto"></ngx-datatable-column>
                             <ngx-datatable-column name="Telefono" prop="telefono"></ngx-datatable-column>
                             <ngx-datatable-column name="Mail" prop="mail"></ngx-datatable-column>
-                            <ngx-datatable-column name="Persona Moral" prop="esPersonaMoral">
+                            <ngx-datatable-column [maxWidth]="100" name="Persona Moral" prop="esPersonaMoral">
                                 <ng-template let-value="value" ngx-datatable-cell-template>
                                     {{value==1 ? 'Si' : 'No' }}
                                 </ng-template>
                             </ngx-datatable-column>
                             <ngx-datatable-column name="Fecha de alta" prop="fechaAlta">
                                 <ng-template let-value="value" ngx-datatable-cell-template>
-                                    {{value | date: 'MM/dd/yyyy'}}
+                                    {{value | date: 'dd/MM/yyyy'}}
                                 </ng-template>
                             </ngx-datatable-column>
                             <ngx-datatable-column name="Fecha Actualizacion" prop="fechaActualizacion">
                                 <ng-template let-value="value" ngx-datatable-cell-template>
-                                    {{value | date: 'MM/dd/yyyy'}}
+                                    {{value | date: 'dd/MM/yyyy'}}
                                 </ng-template>
                             </ngx-datatable-column>
                             <ngx-datatable-column name="Tipo de Cliente" prop="TipoClientes.descripcion"></ngx-datatable-column>
                             <ngx-datatable-column [minWidth]="200" name="Acciones">
                                 <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
-                                    <span>
-                                      <div class="btn-group" role="group" aria-label="Basic example">
+
+                                    <div style="display: flex; grid-gap: 10px; ">
                                         <button type="button" (click)="ActualizarCliente_Modal(row)" class="btn btn-warning">Editar</button>
-                                        <button type="button" (click)="EliminarCliente_Modal(row)" class="btn btn-danger">Eliminar</button>
-                                      </div>
-                                    </span>
+                                        <button type="button" (click)="eliminar_modal(row)" class="btn btn-danger">Eliminar</button>
+                                    </div>
                                 </ng-template>
                             </ngx-datatable-column>
                         </ngx-datatable>
+                    </div>
+                </div>
+                <div class="row justify-content-end mb-auto ">
+                    <div class="col-lg-auto ">
+                        <button type="button " class="btn btn-primary float-right " (click)="Descargar_CSV() ">Descargar CSV</button>
                     </div>
                 </div>
             </div>
@@ -91,7 +98,6 @@
                     <input type="text" formControlName="contacto" id="contacto" name="contacto" class="form-control" required />
                     <p class="text-danger mt-1" *ngIf="nuevoCliente.get('contacto')?.errors">Requerido</p>
                     <div class="row">
-
                         <div class="col-sm-6">
                             <div>
                                 <label>Es Persona Moral</label>
@@ -120,8 +126,7 @@
                     <input type="text" formControlName="mail" id="mail" name="mail" class="form-control" required placeholder="ejemplo@ejemplo.com" />
                     <p class="text-danger mt-1" *ngIf="nuevoCliente.get('mail')?.errors">Requerido</p>
                     <label>Tipo de Cliente</label>
-                    <ng-select [items]="tipoClientes" bindLabel="descripcion" bindValue="idTipoCliente" placeholder="type to search" formControlName="idTipoCliente">
-                    </ng-select>
+                    <ng-select [items]="tipoClientes" bindLabel="idTipoCliente" bindValue="idTipoCliente" placeholder="type to search" formControlName="idTipoCliente"></ng-select>
                     <p class="text-danger mt-1" *ngIf="nuevoCliente.get('idTipoCliente')?.errors">Requerido</p>
                 </div>
                 <div class="modal-footer">
@@ -191,23 +196,6 @@
                     <button type="submit" class="btn btn-primary" [disabled]="actualizarCliente.invalid">Editar</button>
                 </div>
             </form>
-        </div>
-    </div>
-</ng-template>
-
-<!-- MODAL ELIMINAR -->
-<ng-template #eliminarModal let-modal>
-    <div class="modal-header">
-        <h5 class="modal-title" id="modalElinar">Eliminar</h5>
-        <button type="button" class="close" (click)="modal.close('by: close icon')" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-    </button>
-    </div>
-    <div class="modal-body">
-        <div class="container" style="text-align: center;">
-            <h6>Estas seguro en elimnar?</h6>
-            <button type="button" class="btn btn-secondary " (click)="modal.close('by: close button')">Cerrar</button>
-            <button type="button" class="btn btn-primary" (click)="EliminarCliente()">Elimnar</button>
         </div>
     </div>
 </ng-template>

@@ -1,8 +1,6 @@
-import { element } from 'protractor';
 import { ClienteModel } from './../../../../Models/cliente.model';
-import { TipoClienteModel } from './../../../../Models/tipoCliente.model';
 import { retry, map } from 'rxjs/operators';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { CONSTANTS } from './../../../../core/constants/constants';
 import { Subject } from 'rxjs';
@@ -78,21 +76,14 @@ export class ClientesService {
         })
       )
   }
-
-  public getTipoClientes() {
-    return this._httpClient.get(`${CONSTANTS.API_BASE_URL}${CONSTANTS.API_TIPOCLIENTES_URL}`)
-      .pipe(
-        retry(1),
-
-        map((data: any) => {
-          let TipoClientes: Array<TipoClienteModel> = new Array<TipoClienteModel>()
-          data.forEach(element => {
-            TipoClientes.push(new TipoClienteModel(element))
-          });
-          return TipoClientes;
-        })
-      )
+  public getCSV(){
+    return this._httpClient.get(`${CONSTANTS.API_BASE_URL}${CONSTANTS.API_CSV}${CONSTANTS.API_CLIENTES_URL}`)
+    .pipe(
+      retry(1),
+      map((data: any) => {
+        return data;
+      })
+    )
   }
-
 
 }
