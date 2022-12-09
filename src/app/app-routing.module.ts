@@ -69,6 +69,10 @@ const routes: Routes = [
         loadChildren: () => import('./views/pages/cotizaciones/cotizaciones.module').then(m => m.CotizacionesModule)
       },
       {
+        path: 'intereses',
+        loadChildren: () => import('./views/pages/intereses/intereses.module').then(m => m.InteresesModule)
+      },
+      {
         path: 'tiposClientes',
         loadChildren: () => import('./views/pages/tipo-cliente/tipo-cliente.module').then(m => m.TipoClienteModule)
       },
