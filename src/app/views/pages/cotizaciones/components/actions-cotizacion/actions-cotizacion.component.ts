@@ -1,7 +1,7 @@
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { CotizacionModel } from 'src/app/Models/cotizacion';
-import { timingSafeEqual } from 'crypto';
+//import { timingSafeEqual } from 'crypto';
 
 @Component({
   selector: 'app-actions-cotizacion',
