@@ -10,4 +10,5 @@ export const CONSTANTS = {
   API_CATINTERESES_URL: 'catIntereses',
   API_TIPOSERVICIOS_URL: "tipoServicios",
   API_INTERESES_URL: "intereses",
+  API_ROLES_URL: "roles",
 }

@@ -1,24 +1,57 @@
+<nav class="page-breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a routerLink=".">CRM-CEDICOOP & BLUECLOUD</a></li>
+        <li class="breadcrumb-item active" aria-current="page">USUARIOS</li>
+    </ol>
+</nav>
+
+<div class="row">
+    <div class="col-md-12 grid-margin stretch-card">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Usuarios</h4>
+                <p class="card-description mb-0">Este espacio de trabajo esta desinado a crear usuarios.</p>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row inbox-wrapper">
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                <div class="row">
-                    <div class="col-lg-12">
-                        <button type="button" class="btn btn-primary float-right" (click)="onAgregar()">Agregar</button>
+                <div class="row justify-content-end mb-5">
+                    <div class="col-lg-3">
+                        <input #search id="search" type="text" class="form-control " placeholder="Buscar" aria-label="Search" aria-describedby="basic-addon1" />
+                    </div>
+                    <div class="col-lg-auto">
+                        <button type="button" (click)="agregar_Modal()" class="btn btn-primary float-right">Agregar</button>
                     </div>
                 </div>
                 <div class="row">
                     <h6 class="card-title">Usuarios</h6>
                     <div class="table-responsive">
-                        <ngx-datatable class="bootstrap" [rows]="rows" [loadingIndicator]="loadingIndicator" [columnMode]="ColumnMode.force" [footerHeight]="50" [limit]="10" rowHeight="auto">
-                            <ngx-datatable-column name="Id" prop="idUsuario"></ngx-datatable-column>
+                        <ngx-datatable [scrollbarH]="true" class="bootstrap" [rows]="usuarios" [loadingIndicator]="loadingIndicator" [columnMode]="ColumnMode.force" [footerHeight]="50" [limit]="10" rowHeight="auto">
+                            <ngx-datatable-column name="Id" [maxWidth]="70" prop="idUsuario"></ngx-datatable-column>
                             <ngx-datatable-column name="Nombre" prop="nombre"></ngx-datatable-column>
-                            <ngx-datatable-column name="Telfono" prop="telefono"></ngx-datatable-column>
+                            <ngx-datatable-column name="Apellidos" prop="apellidos"></ngx-datatable-column>
+                            <ngx-datatable-column name="Telefono" prop="telefono"></ngx-datatable-column>
                             <ngx-datatable-column name="Mail" prop="mail"></ngx-datatable-column>
                             <ngx-datatable-column name="Usuario" prop="usuario"></ngx-datatable-column>
                             <ngx-datatable-column name="Rol" prop="Roles.descripcion"></ngx-datatable-column>
-                            <ngx-datatable-column name="Acciones"></ngx-datatable-column>
+                            <ngx-datatable-column [minWidth]="200" name="Acciones">
+                                <ng-template let-value="value" let-row="row" ngx-datatable-cell-template>
+                                    <div style="display: flex; grid-gap: 10px; ">
+                                        <button type="button" (click)="Actualizar_Modal(row)" class="btn btn-warning ">Editar</button>
+                                        <button type="button " (click)="eliminar_modal(row)" class="btn btn-danger ">Eliminar</button>
+                                    </div>
+                                </ng-template>
+                            </ngx-datatable-column>
                         </ngx-datatable>
+                    </div>
+                </div>
+                <div class="row justify-content-end mb-auto ">
+                    <div class="col-lg-auto ">
+                        <button type="button " class="btn btn-primary float-right " (click)="Descargar_CSV() ">Descargar CSV</button>
                     </div>
                 </div>
             </div>
@@ -26,52 +59,137 @@
     </div>
 </div>
 
-<quill-editor placeholder="Enter Text"></quill-editor>
-
 <!-- MODAL AGREGAR -->
-<ng-template #lgModal let-modal>
-    <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">{{title}}</h5>
-        <button type="button" class="close" (click)="modal.close('by: close icon')" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
+<ng-template #agregarModal let-modal>
+    <div class="modal-header ">
+        <h5 class="modal-title " id="exampleModalLabel ">Agregar</h5>
+        <button type="button " class="close " (click)="modal.close( 'by: close icon') " aria-label="Close ">
+                        <span aria-hidden="true ">&times;</span>
+                    </button>
     </div>
-    <div class="modal-body">
-        <form (ngSubmit)="form1Submit()" [formGroup]="validationForm1">
-
-            <div class="form-group">
-                <label for="firstName" class="col-sm-3 ">First name</label>
-                <div class="col-sm-12">
-                    <input type="text" class="form-control" id="firstName" formControlName="firstName" [ngClass]="{'is-invalid': isForm1Submitted && form1.firstName.errors}" placeholder="First name">
-                    <div *ngIf="isForm1Submitted && form1.firstName.errors?.required" class="invalid-feedback">
-                        Required
+    <div class="modal-body ">
+        <div class="container">
+            <form [formGroup]="nuevoUsuarios" (ngSubmit)="agregar()">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input type="text" formControlName="nombre" class="form-control" required>
+                            <p class="text-danger mt-1" *ngIf="nuevoUsuarios.get('nombre')?.errors">Requerido</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Apellidos</label>
+                            <input type="text" formControlName="apellidos" class="form-control" required>
+                            <p class="text-danger mt-1" *ngIf="nuevoUsuarios.get('apellidos')?.errors">Requerido</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="form-group">
-                <label for="lastName" class="col-sm-3 ">Last name</label>
-                <div class="col-sm-12">
-                    <input type="text" class="form-control" id="lastName" formControlName="lastName" [ngClass]="{'is-invalid': isForm1Submitted && form1.lastName.errors}" placeholder="Last name">
-                    <div *ngIf="isForm1Submitted && form1.lastName.errors?.required" class="invalid-feedback">
-                        Required
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Telefono</label>
+                            <input type="text" mask="(000) 000 00 00" [showMaskTyped]="true" formControlName="telefono" class="form-control" required>
+                            <p class="text-danger mt-1" *ngIf="nuevoUsuarios.get('telefono')?.errors">Requerido</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Mail</label>
+                            <input type="mail" formControlName="mail" class="form-control" required placeholder="ejemplo@ejemplo.com">
+                            <p class="text-danger mt-1" *ngIf="nuevoUsuarios.get('mail')?.errors">Requerido</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="form-group">
-                <label for="userName" class="col-sm-3 ">User name</label>
-                <div class="col-sm-12">
-                    <input type="text" class="form-control" id="userName" formControlName="userName" [ngClass]="{'is-invalid': isForm1Submitted && form1.userName.errors}" placeholder="User name">
-                    <div *ngIf="isForm1Submitted && form1.userName.errors?.required" class="invalid-feedback">
-                        Required
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>usuario</label>
+                            <input type="text" formControlName="usuario" class="form-control" required>
+                            <p class="text-danger mt-1" *ngIf="nuevoUsuarios.get('usuario')?.errors">Requerido</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Rol</label>
+                            <ng-select [items]="roles" bindLabel="descripcion" bindValue="idRol" placeholder="Buscar" formControlName="idRol"></ng-select>
+                            <p class="text-danger mt-1" *ngIf="nuevoUsuarios.get('idRol')?.errors">Requerido</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </form>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="nuevoUsuarios.invalid">Continuar</button>
+                </div>
+            </form>
+        </div>
     </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
-        <button type="button" class="btn btn-primary" (click)="modal.close('by: save button')">Guardar</button>
+</ng-template>
+<!-- MODAL ACTUALIZAR -->
+<ng-template #actualizarModal let-modal>
+    <div class="modal-header ">
+        <h5 class="modal-title " id="exampleModalLabel ">Actualizar</h5>
+        <button type="button " class="close " (click)="modal.close( 'by: close icon') " aria-label="Close ">
+                <span aria-hidden="true ">&times;</span>
+            </button>
+    </div>
+    <div class="modal-body ">
+        <div class="container">
+            <form [formGroup]="actualizarUsuarios" (ngSubmit)="actualizar()">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Nombre</label>
+                            <input type="text" formControlName="nombre" class="form-control" required>
+                            <p class="text-danger mt-1" *ngIf="actualizarUsuarios.get('nombre')?.errors">Requerido</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Apellidos</label>
+                            <input type="text" formControlName="apellidos" class="form-control" required>
+                            <p class="text-danger mt-1" *ngIf="actualizarUsuarios.get('apellidos')?.errors">Requerido</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Telefono</label>
+                            <input type="text" mask="(000) 000 00 00" [showMaskTyped]="true" formControlName="telefono" class="form-control" required>
+                            <p class="text-danger mt-1" *ngIf="actualizarUsuarios.get('telefono')?.errors">Requerido</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Mail</label>
+                            <input type="mail" formControlName="mail" class="form-control" required placeholder="ejemplo@ejemplo.com">
+                            <p class="text-danger mt-1" *ngIf="actualizarUsuarios.get('mail')?.errors">Requerido</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>usuario</label>
+                            <input type="text" formControlName="usuario" class="form-control" required>
+                            <p class="text-danger mt-1" *ngIf="actualizarUsuarios.get('usuario')?.errors">Requerido</p>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="form-group">
+                            <label>Rol</label>
+                            <ng-select [items]="roles" bindLabel="descripcion" bindValue="idRol" placeholder="Buscar" formControlName="idRol"></ng-select>
+                            <p class="text-danger mt-1" *ngIf="actualizarUsuarios.get('idRol')?.errors">Requerido</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="actualizarUsuarios.invalid">Continuar</button>
+                </div>
+            </form>
+        </div>
     </div>
 </ng-template>

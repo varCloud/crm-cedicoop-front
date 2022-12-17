@@ -1,13 +1,15 @@
-import {  HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { CustomFormsModule } from 'ngx-custom-validators';
+import { NgSelectModule } from '@ng-select/ng-select';
+import { NgxMaskModule } from 'ngx-mask';
+
 
 import { UsuariosRoutingModule } from './usuarios-routing.module';
 import { UsuariosComponent } from './usuarios.component';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
-import { QuillModule } from 'ngx-quill';
+
 
 
 @NgModule({
@@ -16,11 +18,10 @@ import { QuillModule } from 'ngx-quill';
     CommonModule,
     UsuariosRoutingModule,
     NgxDatatableModule,
-    NgbModalModule,
-    FormsModule,
+    CustomFormsModule,
     ReactiveFormsModule,
-    QuillModule.forRoot()
-
+    NgSelectModule,
+    NgxMaskModule.forRoot({ validation: true}), // Ngx-mask
   ]
 })
 export class UsuariosModule { }
