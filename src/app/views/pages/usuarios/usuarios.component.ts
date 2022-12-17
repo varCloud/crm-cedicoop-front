@@ -63,7 +63,6 @@ export class UsuariosComponent implements OnInit {
       telefono: ["", Validators.required],
       mail: ["", Validators.required],
       usuario: ["", Validators.required],
-      contrasena: ["", Validators.required],
       idRol: ["", Validators.required],
       activo: [""]
     })

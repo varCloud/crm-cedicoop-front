@@ -112,16 +112,11 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>contrasena</label>
-                            <input type="password" formControlName="contrasena" class="form-control" required>
-                            <p class="text-danger mt-1" *ngIf="nuevoUsuarios.get('contrasena')?.errors">Requerido</p>
+                            <label>Rol</label>
+                            <ng-select [items]="roles" bindLabel="descripcion" bindValue="idRol" placeholder="Buscar" formControlName="idRol"></ng-select>
+                            <p class="text-danger mt-1" *ngIf="nuevoUsuarios.get('idRol')?.errors">Requerido</p>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label>Rol</label>
-                    <ng-select [items]="roles" bindLabel="descripcion" bindValue="idRol" placeholder="Buscar" formControlName="idRol"></ng-select>
-                    <p class="text-danger mt-1" *ngIf="nuevoUsuarios.get('idRol')?.errors">Requerido</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
@@ -184,16 +179,11 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group">
-                            <label>contrasena</label>
-                            <input type="password" formControlName="contrasena" class="form-control" required>
-                            <p class="text-danger mt-1" *ngIf="actualizarUsuarios.get('contrasena')?.errors">Requerido</p>
+                            <label>Rol</label>
+                            <ng-select [items]="roles" bindLabel="descripcion" bindValue="idRol" placeholder="Buscar" formControlName="idRol"></ng-select>
+                            <p class="text-danger mt-1" *ngIf="actualizarUsuarios.get('idRol')?.errors">Requerido</p>
                         </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label>Rol</label>
-                    <ng-select [items]="roles" bindLabel="descripcion" bindValue="idRol" placeholder="Buscar" formControlName="idRol"></ng-select>
-                    <p class="text-danger mt-1" *ngIf="actualizarUsuarios.get('idRol')?.errors">Requerido</p>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
