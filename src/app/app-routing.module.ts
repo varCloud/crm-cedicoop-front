@@ -73,6 +73,10 @@ const routes: Routes = [
         loadChildren: () => import('./views/pages/intereses/intereses.module').then(m => m.InteresesModule)
       },
       {
+        path: 'instructores',
+        loadChildren: () => import('./views/pages/instructores/instructores.module').then(m => m.InstructoresModule)
+      },
+      {
         path: 'tiposClientes',
         loadChildren: () => import('./views/pages/tipo-cliente/tipo-cliente.module').then(m => m.TipoClienteModule)
       },
