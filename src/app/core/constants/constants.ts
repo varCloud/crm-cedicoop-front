@@ -11,4 +11,5 @@ export const CONSTANTS = {
   API_TIPOSERVICIOS_URL: "tipoServicios",
   API_INTERESES_URL: "intereses",
   API_ROLES_URL: "roles",
+  API_INSTRUCTORES_URL: "instructores"
 }
