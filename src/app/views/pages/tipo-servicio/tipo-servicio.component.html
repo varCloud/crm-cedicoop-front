@@ -51,49 +51,50 @@
             </div>
         </div>
     </div>
-    <ng-template #agregarModal let-modal>
-        <div class="modal-header ">
-            <h5 class="modal-title " id="exampleModalLabel ">Agregar</h5>
-            <button type="button " class="close " (click)="modal.close( 'by: close icon') " aria-label="Close ">
+</div>
+
+<ng-template #agregarModal let-modal>
+    <div class="modal-header ">
+        <h5 class="modal-title " id="exampleModalLabel ">Agregar</h5>
+        <button type="button " class="close " (click)="modal.close( 'by: close icon') " aria-label="Close ">
                         <span aria-hidden="true ">&times;</span>
                     </button>
+    </div>
+    <div class="modal-body ">
+        <div class="container">
+            <form [formGroup]="nuevoTipoServicio" (ngSubmit)="agregar()">
+                <div class="form-group">
+                    <label>Descripcion</label>
+                    <input type="text" formControlName="descripcion" class="form-control" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="nuevoTipoServicio.invalid">Continuar</button>
+                </div>
+            </form>
         </div>
-        <div class="modal-body ">
-            <div class="container">
-                <form [formGroup]="nuevoTipoServicio" (ngSubmit)="agregar()">
-                    <div class="form-group">
-                        <label>Descripcion</label>
-                        <input type="text" formControlName="descripcion" class="form-control" required>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
-                        <button type="submit" class="btn btn-primary" [disabled]="nuevoTipoServicio.invalid">Continuar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </ng-template>
-    <!-- MODAL ACTUALIZAR -->
-    <ng-template #actualizarModal let-modal>
-        <div class="modal-header ">
-            <h5 class="modal-title " id="exampleModalLabel ">Actualizar</h5>
-            <button type="button " class="close " (click)="modal.close( 'by: close icon') " aria-label="Close ">
+    </div>
+</ng-template>
+<!-- MODAL ACTUALIZAR -->
+<ng-template #actualizarModal let-modal>
+    <div class="modal-header ">
+        <h5 class="modal-title " id="exampleModalLabel ">Actualizar</h5>
+        <button type="button " class="close " (click)="modal.close( 'by: close icon') " aria-label="Close ">
                 <span aria-hidden="true ">&times;</span>
             </button>
+    </div>
+    <div class="modal-body ">
+        <div class="container">
+            <form [formGroup]="actualizarTipoServicio" (ngSubmit)="actualizar()">
+                <div class="form-group">
+                    <label>Descripcion</label>
+                    <input type="text" formControlName="descripcion" class="form-control" required>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" [disabled]="actualizarTipoServicio.invalid">Continuar</button>
+                </div>
+            </form>
         </div>
-        <div class="modal-body ">
-            <div class="container">
-                <form [formGroup]="actualizarTipoServicio" (ngSubmit)="actualizar()">
-                    <div class="form-group">
-                        <label>Descripcion</label>
-                        <input type="text" formControlName="descripcion" class="form-control" required>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" (click)="modal.close('by: close button')">Cerrar</button>
-                        <button type="submit" class="btn btn-primary" [disabled]="actualizarTipoServicio.invalid">Continuar</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </ng-template>
-</div>
+    </div>
+</ng-template>
